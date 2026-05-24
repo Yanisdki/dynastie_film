@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Accueil - Dynastie Film{% endblock %}
+
+{% block content %}
+
+<div class="hero-fullscreen">
+    <!-- CONTENEUR PARENT (se rétracte au scroll) -->
+    <div class="titles-wrapper">
+        
+        <!-- CONTENEUR DYNASTIE -->
+        <div class="title-box dynastie-box">
+            <h1 class="dynastie-title">DYNASTIE</h1>
+        </div>
+        
+        <!-- CONTENEUR FILM -->
+        <div class="title-box film-box">
+            <h1 class="film-title">Film</h1>
+        </div>
+        
+    </div>
+</div>
+
+<div class="scroll-trigger"></div>
+
+<section class="photo-grid">
+    <div class="grid-container">
+        <div class="grid-item">1</div>
+        <div class="grid-item">2</div>
+        <div class="grid-item">3</div>
+        <div class="grid-item">4</div>
+        <div class="grid-item">5</div>
+        <div class="grid-item">6</div>
+    </div>
+</section>
+
+{% endblock %}

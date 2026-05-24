@@ -1,0 +1,28 @@
+ const navCurrentLeft = (navEndLeft * progress) + (navStartLeft * (1 - progress));
+        const navCurrentTop = (navEndTop * progress) + (navStartTop * (1 - progress));
+        const navCurrentOpacity = (navEndOpacity * progress) + (navStartOpacity * (1 - progress));
+        const navCurrentScale = (navEndScale * progress) + (navStartScale * (1 - progress));
+        const navCurrentLinkSize = (navEndLinkSize * progress) + (navStartLinkSize * (1 - progress));
+        
+        navLinks.style.position = 'fixed';
+        navLinks.style.left = `${navCurrentLeft}px`;
+        navLinks.style.top = `${navCurrentTop}px`;
+        navLinks.style.transform = `scale(${navCurrentScale})`;
+        navLinks.style.opacity = navCurrentOpacity;
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.style.fontSize = `${navCurrentLinkSize}px`;
+        });
+        
+        // === MENUTOGGLE : interpolation entre état initial et final ===
+        const burgerCurrentLeft = (burgerEndLeft * progress) + (burgerStartLeft * (1 - progress));
+        const burgerCurrentTop = (burgerEndTop * progress) + (burgerStartTop * (1 - progress));
+        const burgerCurrentOpacity = (burgerEndOpacity * progress) + (burgerStartOpacity * (1 - progress));
+        const burgerCurrentScale = (burgerEndScale * progress) + (burgerStartScale * (1 - progress));
+        
+        menuToggle.style.position = 'fixed';
+        menuToggle.style.left = `${burgerCurrentLeft}px`;
+        menuToggle.style.top = `${burgerCurrentTop}px`;
+        menuToggle.style.transform = `scale(${burgerCurrentScale})`;
+        menuToggle.style.opacity = burgerCurrentOpacity;
+        menuToggle.style.pointerEvents = progress >= 0.7 ? 'auto' : 'none';

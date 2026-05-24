@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dynastie Film{% endblock %}</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lens.css' %}">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+   <nav class="main-nav">
+    <div class="burger-wrapper" id="burgerWrapper">
+        <div class="menu-toggle" id="menuToggle">
+            <span>MENU</span>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="{% url 'core:home' %}">Accueil</a></li>
+        <li><a href="{% url 'core:portfolio' %}">Portfolio</a></li>
+        <li><a href="{% url 'core:reservation' %}">Réservation</a></li>
+        <li><a href="{% url 'core:education' %}">Éducation</a></li>
+        <li><a href="{% url 'core:idees' %}">Idées</a></li>
+    </ul>
+</nav>
+
+    <!-- ===== CONTENU PRINCIPAL ===== -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div class="lens-overlay" id="lensOverlay">
+    <canvas id="lensCanvas"></canvas>
+</div>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+    <script src="{% static 'js/lens.js' %}"></script>
+    <!-- Overlay objectif d'appareil photo -->
+
+</body>
+</html>
