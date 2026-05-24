@@ -7,7 +7,7 @@ class LensEffect {
         this.isAnimating = false;
         this.targetUrl = null;
         
-        this.numBlades = 16;
+        this.numBlades = 8;
         this.centerX = 0;
         this.centerY = 0;
         this.radius = 0;
@@ -40,6 +40,28 @@ class LensEffect {
         this.centerY = this.canvas.height / 2;
         this.radius = Math.max(this.canvas.width, this.canvas.height) * 0.7;
         this.bladeLength = this.radius * 1.3;
+        
+        // Capture de la page actuelle pour l'effet de transition
+        this.captureCurrentPage();
+    }
+    
+    captureCurrentPage() {
+        // Capture la page actuelle en image
+        const body = document.body;
+        const rect = body.getBoundingClientRect();
+        
+        // Créer un canvas temporaire pour capturer la page
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = this.canvas.width;
+        tempCanvas.height = this.canvas.height;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // Dessiner l'arrière-plan actuel
+        tempCtx.fillStyle = '#111';
+        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        
+        // Convertir en image
+        this.currentPageImage = tempCanvas;
     }
     
     captureLinks() {
@@ -72,14 +94,11 @@ class LensEffect {
         this.targetUrl = url;
         
         this.overlay.classList.add('active');
-        
-        setTimeout(() => {
-            document.body.classList.add('lens-blur');
-        }, 50);
+        document.body.classList.add('lens-blur');
         
         this.rotationAngle = 0;
         
-        // FERMETURE : le trou passe de radius à 0
+        // Fermeture progressive
         this.animateCloseLens(() => {
             if (this.targetUrl === '#menu') {
                 const menuToggle = document.getElementById('menuToggle');
@@ -89,13 +108,13 @@ class LensEffect {
                     navLinks.classList.add('active');
                     document.body.style.overflow = 'hidden';
                 }
-                // OUVERTURE : le trou repasse de 0 à radius
                 this.animateOpenLens(() => {
                     this.isAnimating = false;
                     document.body.classList.remove('lens-blur');
                     this.overlay.classList.remove('active');
                 });
             } else {
+                // Navigation vers la nouvelle page
                 window.sessionStorage.setItem('lensAnimating', 'true');
                 window.location.href = this.targetUrl;
             }
@@ -114,7 +133,6 @@ class LensEffect {
         });
     }
     
-    // FERMETURE : le trou se ferme (radius → 0)
     animateCloseLens(callback) {
         const duration = 800;
         const startTime = performance.now();
@@ -125,11 +143,13 @@ class LensEffect {
             let progress = Math.min(elapsed / duration, 1);
             
             const easeProgress = 1 - Math.pow(1 - progress, 3);
-            // aperture : 1 (ouvert) → 0 (fermé)
             const aperture = 1 - easeProgress;
-            // rotation : 0 → maxRotation
             const maxRotation = Math.PI / 3;
             this.rotationAngle = maxRotation * easeProgress;
+            
+            // Mettre à jour le flou progressivement
+            const blurAmount = (1 - aperture) * 20;
+            this.updateBlur(blurAmount);
             
             this.drawLens(aperture);
             
@@ -145,7 +165,6 @@ class LensEffect {
         animationId = requestAnimationFrame(animate);
     }
     
-    // OUVERTURE : le trou s'ouvre (0 → radius)
     animateOpenLens(callback) {
         const duration = 800;
         const startTime = performance.now();
@@ -156,11 +175,13 @@ class LensEffect {
             let progress = Math.min(elapsed / duration, 1);
             
             const easeProgress = 1 - Math.pow(1 - progress, 3);
-            // aperture : 0 (fermé) → 1 (ouvert)
             const aperture = easeProgress;
-            // rotation : maxRotation → 0
             const maxRotation = Math.PI / 3;
             this.rotationAngle = maxRotation * (1 - easeProgress);
+            
+            // Réduire le flou progressivement
+            const blurAmount = (1 - aperture) * 20;
+            this.updateBlur(blurAmount);
             
             this.drawLens(aperture);
             
@@ -175,21 +196,47 @@ class LensEffect {
         animationId = requestAnimationFrame(animate);
     }
     
+    updateBlur(blurAmount) {
+        let style = document.getElementById('lens-blur-style');
+        if (!style) {
+            style = document.createElement('style');
+            style.id = 'lens-blur-style';
+            document.head.appendChild(style);
+        }
+        
+        style.textContent = `
+            body.lens-blur::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                backdrop-filter: blur(${blurAmount}px);
+                background: rgba(0, 0, 0, ${blurAmount / 30});
+                z-index: 9998;
+                pointer-events: none;
+                transition: all 0.02s linear;
+            }
+        `;
+    }
+    
     drawLens(aperture) {
         if (!this.ctx) return;
         
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Fond noir
-        this.ctx.fillStyle = 'black';
+        // Fond noir avec opacité progressive
+        const darkOpacity = (1 - aperture) * 0.8;
+        this.ctx.fillStyle = `rgba(0, 0, 0, ${darkOpacity})`;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         if (aperture >= 0.99) return;
         
-        // Taille du trou : 0 quand fermé, radius quand ouvert
+        // Taille du trou
         const currentRadius = this.radius * aperture;
         
-        // Créer le trou transparent
+        // Créer le trou transparent (laisse voir la page)
         this.ctx.globalCompositeOperation = 'destination-out';
         this.ctx.beginPath();
         this.ctx.arc(this.centerX, this.centerY, currentRadius, 0, Math.PI * 2);
@@ -202,78 +249,53 @@ class LensEffect {
     }
     
     drawBlades(aperture) {
-    const angleStep = (Math.PI * 2) / this.numBlades;
-    const bladeOpacity = Math.min(1, (1 - aperture) * 1.5);
-    if (bladeOpacity <= 0) return;
-    
-    // innerRadius : taille du trou central
-    const innerRadius = this.radius * aperture;
-    
-    for (let i = 0; i < this.numBlades; i++) {
-        // Position de base de la lamelle (réparties régulièrement)
-        const bladeCenterAngle = i * angleStep + this.rotationAngle;
+        const angleStep = (Math.PI * 2) / this.numBlades;
+        const bladeOpacity = Math.min(1, (1 - aperture) * 1.5);
+        if (bladeOpacity <= 0) return;
         
-        // Chaque lamelle a sa propre rotation
-        // Plus l'objectif est fermé, plus les lamelles pivotent vers le centre
-        const pivotAngle = (1 - aperture) * (Math.PI / 3); // Max 60° de pivot
+        const innerRadius = this.radius * aperture;
         
-        // Angle de début et fin de la lamelle
-        const startAngle = bladeCenterAngle - angleStep/2 - pivotAngle;
-        const endAngle = bladeCenterAngle + angleStep/2 + pivotAngle;
+        for (let i = 0; i < this.numBlades; i++) {
+            const bladeAngle = i * angleStep + this.rotationAngle;
+            const nextAngle = bladeAngle + angleStep;
+            
+            const x1 = this.centerX + Math.cos(bladeAngle) * this.radius;
+            const y1 = this.centerY + Math.sin(bladeAngle) * this.radius;
+            const x2 = this.centerX + Math.cos(nextAngle) * this.radius;
+            const y2 = this.centerY + Math.sin(nextAngle) * this.radius;
+            
+            const innerAngle = bladeAngle + angleStep / 2;
+            const ix = this.centerX + Math.cos(innerAngle) * innerRadius;
+            const iy = this.centerY + Math.sin(innerAngle) * innerRadius;
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(x1, y1);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.lineTo(ix, iy);
+            this.ctx.closePath();
+            
+            this.ctx.fillStyle = '#555';
+            this.ctx.globalAlpha = bladeOpacity;
+            this.ctx.fill();
+        }
         
-        // Point extérieur (sur le bord du cercle)
-        const outerX1 = this.centerX + Math.cos(startAngle) * this.radius;
-        const outerY1 = this.centerY + Math.sin(startAngle) * this.radius;
-        const outerX2 = this.centerX + Math.cos(endAngle) * this.radius;
-        const outerY2 = this.centerY + Math.sin(endAngle) * this.radius;
+        this.ctx.globalAlpha = 1;
         
-        // Point intérieur (vers le centre)
-        // Plus l'objectif est fermé, plus les pointes vont vers le centre
-        const tipDistance = innerRadius + (1 - aperture) * 20;
-        const innerX = this.centerX + Math.cos(bladeCenterAngle) * tipDistance;
-        const innerY = this.centerY + Math.sin(bladeCenterAngle) * tipDistance;
+        // Cercle central
+        if (innerRadius > 3) {
+            this.ctx.beginPath();
+            this.ctx.arc(this.centerX, this.centerY, innerRadius - 2, 0, Math.PI * 2);
+            this.ctx.fillStyle = 'black';
+            this.ctx.fill();
+        }
         
-        // Dégradé
-        const gradient = this.ctx.createLinearGradient(outerX1, outerY1, innerX, innerY);
-        gradient.addColorStop(0, '#777');
-        gradient.addColorStop(0.4, '#999');
-        gradient.addColorStop(0.7, '#555');
-        gradient.addColorStop(1, '#333');
-        
-        // Dessiner la lamelle (triangle ou trapèze)
+        // Bague extérieure
         this.ctx.beginPath();
-        this.ctx.moveTo(outerX1, outerY1);
-        this.ctx.lineTo(outerX2, outerY2);
-        this.ctx.lineTo(innerX, innerY);
-        this.ctx.closePath();
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.globalAlpha = bladeOpacity;
-        this.ctx.fill();
-        
-        // Bordure
-        this.ctx.strokeStyle = '#888';
-        this.ctx.lineWidth = 0.8;
+        this.ctx.arc(this.centerX, this.centerY, this.radius + 3, 0, Math.PI * 2);
+        this.ctx.strokeStyle = '#666';
+        this.ctx.lineWidth = 2;
         this.ctx.stroke();
     }
-    
-    this.ctx.globalAlpha = 1;
-    
-    // Centre noir
-    if (innerRadius > 5) {
-        this.ctx.beginPath();
-        this.ctx.arc(this.centerX, this.centerY, innerRadius - 2, 0, Math.PI * 2);
-        this.ctx.fillStyle = '#0a0a0a';
-        this.ctx.fill();
-    }
-    
-    // Bague extérieure
-    this.ctx.beginPath();
-    this.ctx.arc(this.centerX, this.centerY, this.radius + 3, 0, Math.PI * 2);
-    this.ctx.strokeStyle = '#666';
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
-}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
