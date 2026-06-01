@@ -1,4 +1,5 @@
 from pathlib import Path
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7#bb-p#^ct*#fm#&*$vc0v!(70-#^6zae!vdy0&i_#fxhcqt7y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['audible-hardly-ipad.ngrok-free.dev ', '.ngrok-free.dev', '192.168.1.8', 'localhost', '127.0.0.1']
+DEBUG = False
+ 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', '.onrender.com']
 
 
 # Application definition
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,7 +70,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+DATABASES['default'] = dj_database_url.config(
+    default=os.environ.get('DATABASE_URL'),
+    conn_max_age=600
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -108,7 +113,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -123,7 +129,3 @@ EMAIL_HOST_USER = 'doukiyanis@gmail.com'  # 👈 Ton adresse Gmail
 # ⚠️ Ce n'est PAS le mot de passe de ton compte Google, voir étape ci-dessous
 EMAIL_HOST_PASSWORD = 'ahterexigdpnpymg'  
 DEFAULT_FROM_EMAIL = 'Dynastie Film <ton-email-pro@gmail.com>'
-CSRF_TRUSTED_ORIGINS = [
-    'https://audible-hardly-ipad.ngrok-free.dev',
-    'https://*.ngrok-free.dev' # Pour être tranquille si l'URL change
-]
