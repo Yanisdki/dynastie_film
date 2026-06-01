@@ -10,9 +10,7 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('admin/', admin.site.urls),
-    path('secure-create-admin-xyz789/', create_admin_emergency), # 👈 URL secrète temporaire
-    path('', include('core.urls')),
+    
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('reservation/', views.reservation, name='reservation'),
