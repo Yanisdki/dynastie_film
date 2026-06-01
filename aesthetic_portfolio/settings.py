@@ -1,7 +1,7 @@
 from pathlib import Path
 import dj_database_url
 import os
-import resend
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -170,11 +170,3 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 
-resend.api_key = "re_FVkW3W2a_ADCDX62ib8FwYobKin23D8C6"
-
-r = resend.Emails.send({
-  "from": "onboarding@resend.dev",
-  "to": "doukiyanis@gmail.com",
-  "subject": "Hello World",
-  "html": "<p>Congrats on sending your <strong>first email</strong>!</p>"
-})
