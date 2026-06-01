@@ -124,14 +124,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # settings.py
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'doukiyanis@gmail.com'  # 👈 Ton adresse Gmail
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 
-# ⚠️ Ce n'est PAS le mot de passe de ton compte Google, voir étape ci-dessous
-EMAIL_HOST_PASSWORD = 'ahterexigdpnpymg'  
-DEFAULT_FROM_EMAIL = 'Dynastie Film <ton-email-pro@gmail.com>'
+try:
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+except (ValueError, TypeError):
+    EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# On récupère l'adresse et le mot de passe depuis les variables d'environnement de Render
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'doukiyanis@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ahterexigdpnpymg') # 👈 Mets-le ici en fallback local temporaire, mais configure-le sur Render !
+
+DEFAULT_FROM_EMAIL = 'Dynastie Film <doukiyanis@gmail.com>'
+
+# 🚀 Limite le temps d'attente à 5 secondes pour éviter de faire crash Gunicorn en production
+EMAIL_TIMEOUT = 5
+EMAIL_USE_SSL = False
 
 WHITENOISE_MANIFEST_STRICT = False
 
