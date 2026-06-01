@@ -125,24 +125,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 
-try:
-    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 465))
-except (ValueError, TypeError):
-    EMAIL_PORT = 465
-
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-
-# On récupère l'adresse et le mot de passe depuis les variables d'environnement de Render
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'doukiyanis@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ahterexigdpnpymg') # 👈 Mets-le ici en fallback local temporaire, mais configure-le sur Render !
-
-DEFAULT_FROM_EMAIL = 'Dynastie Film <doukiyanis@gmail.com>'
-
-# 🚀 Limite le temps d'attente à 5 secondes pour éviter de faire crash Gunicorn en production
-EMAIL_TIMEOUT = 5
+# Configuration STARTTLS (Obligatoire pour Render sur le port 587)
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'doukiyanis@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD','ahterexigdpnpymg')
+
+DEFAULT_FROM_EMAIL = f'Dynastie Film <{EMAIL_HOST_USER}>'
+
+# On passe le timeout à 25 secondes pour éviter le "Connection broken" sur Render
+EMAIL_TIMEOUT = 25
+EMAIL_USE_SSL = False
+ 
 
 WHITENOISE_MANIFEST_STRICT = False
 
