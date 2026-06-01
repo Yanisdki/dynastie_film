@@ -1,0 +1,556 @@
+/* ==========================================================================
+   SECTION ÉDITORIALE
+   ========================================================================== */
+/* ==========================================================================
+   SECTION ÉDITORIALE AVEC IMAGE
+   ========================================================================== */
+.editorial-section {
+    padding: 15vh 10%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nouveau conteneur pour aligner l'image et le texte */
+.editorial-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5rem; /* Espace important entre l'image et le texte */
+    max-width: 1400px;
+    width: 100%;
+}
+
+/* Conteneur de l'image (style éditorial/magazine) */
+.editorial-image {
+    flex: 1;
+    max-width: 45%;
+    overflow: hidden; /* Nécessaire pour l'effet de survol */
+   
+}
+
+.editorial-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%); /* Léger effet de style cinéma */
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+}
+
+/* Effet de survol immersif sur l'image */
+.editorial-image:hover img {
+    transform: scale(1.04);
+    filter: grayscale(0%);
+}
+
+/* Ajustement du bloc texte existant */
+.editorial-wrapper {
+    flex: 1;
+    max-width: 50%;
+}
+
+.section-subtitle {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #ffd700;
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.editorial-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: #2c2c2c;
+    margin-bottom: 2rem;
+}
+
+.editorial-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #a0a0a0;
+    margin-bottom: 3rem;
+    font-weight: 300;
+}
+
+.editorial-line {
+    width: 60px;
+    height: 1px;
+    background-color: #ffd700;
+}
+
+/* ==========================================================================
+   RESPONSIVE (Tablettes et Mobiles)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .editorial-container {
+        flex-direction: column; /* L'image et le texte passent l'un sous l'autre */
+        gap: 3.5rem;
+    }
+
+    .editorial-image, .editorial-wrapper {
+        max-width: 100%; /* Occupent toute la largeur disponible */
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   SECTION PROFESSION & DESCRIPTION 
+   ========================================================================== */
+.profession-section {
+   
+    padding: 10vh 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur pour organiser le badge et la description */
+.profession-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    max-width: 1400px;
+    width: 100%;
+}
+
+.profession-badge {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0; /* Empêche le badge de se déformer */
+}
+
+.word-split {
+    display: inline-flex;
+    align-items: baseline;
+}
+
+/* Style des mots découpés */
+.profession-badge .text-italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #2c2c2c;
+    margin-right: 2px;
+}
+
+.profession-badge .text-normal {
+    font-family: 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3.2vw, 2.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #ffd700; /* Ton doré */
+}
+
+.badge-separator {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: rgba(255, 255, 255, 0.2);
+    font-weight: 300;
+}
+
+/* BLOC DESCRIPTION */
+.profession-description {
+    max-width: 500px;
+}
+
+.profession-description p {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #a0a0a0;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+}
+
+/* Mises en valeur subtiles dans le texte */
+.profession-description .desc-highlight {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #2c2c2c;
+    font-size: 1.15rem;
+}
+
+.profession-description .brand-name {
+    color: #ffd700;
+    font-weight: 400;
+}
+
+/* RESPONSIVE : Passage sur une seule colonne pour tablettes et mobiles */
+@media (max-width: 992px) {
+    .profession-container {
+        flex-direction: column;
+        align-items: flex-start; /* Aligné à gauche pour un look éditorial */
+        gap: 2.5rem;
+    }
+    
+    .profession-description {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .profession-badge {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .badge-separator {
+        display: none; /* Cache le slash sur petit mobile */
+    }
+}
+
+/* ==========================================================================
+   SECTION SCROLL HORIZONTAL
+   ========================================================================== */
+/* ==========================================================================
+   SECTION SCROLL HORIZONTAL ASYMÉTRIQUE
+   ========================================================================== */
+/* ==========================================================================
+   SECTION DOUBLE DOUBLE LIGNE HORIZONTALE
+   ========================================================================== */
+/* ==========================================================================
+   DOUBLE HORIZONTAL TRACK - STYLE EDITEUR (NORRIS INSPIRATION)
+   ========================================================================== */
+.horizontal-scroll-section {
+    position: relative;
+    
+}
+
+.horizontal-sticky-wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vh 0;
+}
+
+.gallery-header {
+    padding-left: 10%;
+    margin-bottom: 4vh;
+}
+
+.gallery-subtitle {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: #ffd700;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.gallery-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 500;
+    color: #2c2c2c;
+    letter-spacing: -0.02em;
+}
+
+/* Conteneur global qui accueille les deux lignes */
+.double-track-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3vh; /* Distance verticale serrée et élégante entre les deux blocs */
+    width: 100%;
+}
+
+/* Les lignes horizontales */
+.horizontal-track {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-left: 10%;
+    gap: 80px; /* Large espacement horizontal comme sur landonorris.com */
+    width: max-content;
+    will-change: transform;
+}
+
+/* Base de taille des cartes */
+.gallery-card {
+    width: 420px;
+    height: 28vh; /* Proportion parfaite pour deux blocs par écran */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Carte type IMAGE pure */
+.gallery-card.type-image .card-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #0b0b0b;
+    filter: grayscale(100%);
+    transition: filter 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.gallery-card.type-image:hover .card-image {
+    filter: grayscale(0%);
+    transform: scale(1.01);
+}
+
+/* Carte type TEXTE pur */
+.gallery-card.type-text {
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.card-text-content {
+    max-width: 90%;
+}
+
+.card-num {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #ffd700;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.card-text-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+}
+
+.card-text-content p {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #888;
+    font-weight: 300;
+}
+
+/* Le fameux "vide" asymétrique du design */
+.spacer-card {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .gallery-card {
+        width: 280px;
+        height: 22vh;
+    }
+    .spacer-card {
+        width: 100px;
+    }
+    .horizontal-track {
+        gap: 40px;
+    }
+}
+
+/* --- SECTION AVIS & CONFIG FORMULAIRE --- */
+.feedback-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    
+}
+
+.feedback-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 80px;
+}
+
+/* Colonne de gauche : Liste des avis */
+.section-title, .form-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    color: #b59460;
+}
+
+.form-title {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+    color: #b59460;
+}
+
+.reviews-list {
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 20px;
+    color: black;
+}
+
+/* Personnalisation de la barre de défilement (Scrollbar) */
+.reviews-list::-webkit-scrollbar {
+    width: 3px;
+}
+.reviews-list::-webkit-scrollbar-thumb {
+    background: rgba(234, 155, 45, 0.3);
+}
+
+.review-item {
+    background: rgba(234, 155, 45, 0.03);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    transition: border-color 0.4s ease;
+}
+
+.review-item:hover {
+    border-color: rgba(234, 155, 45, 0.2);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.review-author {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.review-stars-display {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.review-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #bcbcbc;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.empty-text {
+    font-style: italic;
+    opacity: 0.4;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Colonne de droite : Formulaire */
+.review-form-box {
+    background: rgba(255, 255, 255, 0.005);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 40px;
+    height: fit-content;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgb(17, 17, 17,0.03);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #c5a880;
+    background: #b59460;
+}
+
+/* Style des Étoiles Interactives en JS */
+.rating-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* Permet de gérer le survol proprement en CSS */
+    justify-content: flex-end;
+}
+
+.star {
+    font-size: 1.6rem;
+    color: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0 2px;
+}
+
+/* Logique de coloration CSS combinée avec le JS */
+.star:hover,
+.star:hover ~ .star,
+.star.selected,
+.star.selected ~ .star {
+    color: #c5a880;
+    transform: scale(1.1);
+}
+
+/* Bouton de soumission */
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid #c5a880;
+    color: #b59460;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease;
+}
+
+.btn-submit:hover {
+    color: #000000;
+    background: #c5a880;
+}
+
+/* Responsive mobile */
+@media (max-width: 900px) {
+    .feedback-container {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+    .feedback-section {
+        padding: 60px 20px;
+    }
+}

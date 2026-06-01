@@ -1,0 +1,112 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="marquee-container">
+    <div class="difilement-text">
+<div class="marquee-background">
+    <div class="marquee-inner">
+        DYNASTIE FILMS • CINEMATIC STORIES • FOREVER BEGINS NOW • DYNASTIE FILMS • CINEMATIC STORIES • FOREVER BEGINS NOW • </div>
+</div>
+<div class="marquee-background">
+    <div class="marquee-outer">
+        DYNASTIE FILMS • CINEMATIC STORIES • FOREVER BEGINS NOW • DYNASTIE FILMS • CINEMATIC STORIES • FOREVER BEGINS NOW •</div>
+</div>
+</div>
+
+<section class="flex flex-col items-center justify-center min-h-[60vh] transparent py-12">
+    <div id="liquid-mask-container" 
+         data-base-image="{% static 'images/mariee.jpg' %}" 
+         data-reveal-image="{% static 'images/marie.jpg' %}">
+         <canvas id="liquid-canvas"></canvas>
+    </div>
+</section>
+</div>
+
+<section class="conseils-section">
+    <div class="conseils-header">
+        <span class="section-label">Expertise & Conseils</span>
+        <h2 class="section-title">Pour votre journée</h2>
+        <div class="separator"></div>
+    </div>
+
+    <div class="conseils-grid">
+        {% for conseil in conseils %}
+            <article class="conseil-card" onclick="openModal('{{ conseil.id }}')">
+                <div class="card-image">
+                    <img src="{{ conseil.image.url }}" alt="{{ conseil.titre }}">
+                </div>
+                
+                <div class="card-content">
+                    <span class="category-badge">{{ conseil.get_categorie_display }}</span>
+                    <h2 class="card-title">{{ conseil.titre }}</h2>
+                    <p class="card-resume">{{ conseil.resume }}</p>
+                </div>
+                
+                <div id="content-{{ conseil.id }}" class="hidden">
+                    {{ conseil.contenu|linebreaks }}
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<div id="conseil-modal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-container" onclick="event.stopPropagation()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<script>
+window.openModal = function(id) {
+    const modal = document.getElementById('conseil-modal');
+    const modalBody = document.getElementById('modal-body');
+    const contentElement = document.getElementById('content-' + id);
+    
+    if (contentElement) {
+        const fullContent = contentElement.innerHTML;
+        const card = document.querySelector(`[onclick="openModal('${id}')"]`);
+        const title = card.querySelector('.card-title').innerText;
+        
+        modalBody.innerHTML = `<h2>${title}</h2><div class="prose">${fullContent}</div>`;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+window.closeModal = function() {
+    const modal = document.getElementById('conseil-modal');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+};
+</script>
+{% endblock %}
+
+
+{% block extra_canvas %}
+<canvas id="ambient-bg-dark"></canvas>
+
+<style>
+    #ambient-bg-dark {
+        position: fixed !important;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: -1; 
+        pointer-events: none;
+        opacity: 0; /* Géré par le fade-in de gsap-conseils.js */
+    }
+</style>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script type="module" src="{% static 'js/conseils.js' %}"></script>
+    <script type="module" src="{% static 'js/ambient-bg-dark.js' %}"></script>
+    <script type="module" src="{% static 'js/gsap-conseils.js' %}"></script>
+{% endblock %}

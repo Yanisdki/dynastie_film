@@ -1,0 +1,230 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Réservation - Dynastie Film{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reservation.css' %}">
+<div class="reservation-section">
+    <div class="reservation-container">
+        
+        <div class="reservation-header">
+            <span class="section-subtitle">Planifier votre projet</span>
+            <h1 class="reservation-title">Demande de Réservation</h1>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <form method="POST" action="" id="multistep-form" class="booking-form">
+            {% csrf_token %}
+            
+       <div class="form-step step-active" data-step="1">
+    <h2>01. Quelle est la nature de votre projet ?</h2>
+    <div class="prestation-grid">
+        
+        <div class="prestation-card" data-value="MARIAGE">
+            <div class="prestation-image-wrapper">
+                <img src="{% static 'images/prestations/mariage.jpg' %}" alt="Mariage / Fiançailles" class="prestation-img">
+            </div>
+            <div class="prestation-info">
+                <h3>Mariage / Fiançailles</h3>
+                <p class="prestation-desc">Immortalisez le plus beau jour de votre vie avec un film cinématographique unique et émouvant.</p>
+            </div>
+        </div>
+
+        <div class="prestation-card" data-value="CIRCONCISION">
+            <div class="prestation-image-wrapper">
+                <img src="{% static 'images/prestations/circoncision.jpg' %}" alt="Circoncision" class="prestation-img">
+            </div>
+            <div class="prestation-info">
+                <h3>Circoncision</h3>
+                <p class="prestation-desc">Un reportage vidéo soigné et respectueux pour célébrer cet événement familial traditionnel.</p>
+            </div>
+        </div>
+
+        <div class="prestation-card" data-value="CLIP_MUSICAL">
+            <div class="prestation-image-wrapper">
+                <img src="{% static 'images/prestations/clip.jpg' %}" alt="Clip Musical" class="prestation-img">
+            </div>
+            <div class="prestation-info">
+                <h3>Clip Musical</h3>
+                <p class="prestation-desc">Donnez une dimension visuelle supérieure à votre musique grâce à une réalisation digne du grand écran.</p>
+            </div>
+        </div>
+
+        <div class="prestation-card" data-value="EDITORIAL">
+            <div class="prestation-image-wrapper">
+                <img src="{% static 'images/prestations/editorial.jpg' %}" alt="Session Éditoriale / Mode" class="prestation-img">
+            </div>
+            <div class="prestation-info">
+                <h3>Session Éditoriale / Mode</h3>
+                <p class="prestation-desc">Mettez en valeur vos collections, styles et concepts à travers des visuels esthétiques et percutants.</p>
+            </div>
+        </div>
+
+        <div class="prestation-card" data-value="CORPORATE">
+            <div class="prestation-image-wrapper">
+                <img src="{% static 'images/prestations/corporate.jpg' %}" alt="Corporate / Événementiel" class="prestation-img">
+            </div>
+            <div class="prestation-info">
+                <h3>Corporate / Événementiel</h3>
+                <p class="prestation-desc">Valorisez l'image de votre entreprise, vos séminaires ou vos produits avec une production premium.</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <div style="display: none;">
+        {{ form.prestation_type }}
+    </div>
+    
+    <div class="form-navigation">
+        <button type="button" class="btn-next">Suivant</button>
+    </div>
+</div>
+
+            <div class="form-step" data-step="2">
+                <h2>02. Quand et où l'événement a-t-il lieu ?</h2>
+                <div class="input-group">
+                    <label>Date de l'événement</label>
+                    {{ form.date_event }}
+                </div>
+                <div class="input-group">
+                    <label>Lieu (Ville, Salle...)</label>
+                    {{ form.lieu }}
+                </div>
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev">Retour</button>
+                    <button type="button" class="btn-next">Suivant</button>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="3">
+                <h2>03. Personnalisez vos options de production</h2>
+                
+                <div id="options-mariage-only" class="conditional-bloc" style="display: none; margin-bottom: 25px;">
+                    <div class="input-group">
+                        <label style="color: #b59460;">Plage horaire de couverture (Formule Mariage)</label>
+                        {{ form.mariage_horaire }}
+                        <span class="field-helper" style="font-size: 11px; color: #888; margin-top: 5px; display: block;">
+                            Standard : 8h - 18h (60 000 DA) | Soirée : 8h - Fin de soirée (62 000 DA)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="input-group" id="bloc-jours-sup">
+                    <label>Prolonger la production (Journées supplémentaires)</label>
+                    {{ form.jours_supplementaires }}
+                    <span class="field-helper" style="font-size: 11px; color: #888; margin-top: 5px; display: block;">
+                        Tarif appliqué : +35 000 DA pour chaque journée additionnelle.
+                    </span>
+                </div>
+
+                <div id="calendriers-prolongation-container" style="margin-top: 20px; margin-bottom: 25px; display: none;">
+                    <label style="color: #b59460; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 10px;">
+                        Sélectionnez les dates de prolongation :
+                    </label>
+                    <div id="liste-calendriers" style="display: grid; grid-template-columns: 1fr; gap: 15px;"></div>
+                </div>
+
+                <div style="display: none;">
+                    {{ form.dates_supplementaires }}
+                </div>
+
+                <div class="option-row-premium" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
+                    <div>
+                        <label style="margin-bottom: 0; display: block; font-weight: 500; color: black;">Option Drone Cinéma</label>
+                        <span style="font-size: 11px; color: #888;">Prises de vue aériennes en haute définition (+20 000 DA)</span>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        {{ form.option_drone }}
+                    </div>
+                </div>
+
+                <div class="option-row-premium" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
+                    <div>
+                        <label style="margin-bottom: 0; display: block; font-weight: 500; color: black;">Événement hors Wilaya</label>
+                        <span style="font-size: 11px; color: #888;">Cochez si le projet a lieu en dehors de la Wilaya de Tizi Ouzou (+3 000 DA)</span>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        {{ form.hors_wilaya }}
+                    </div>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev">Retour</button>
+                    <button type="button" class="btn-next">Suivant</button>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="4">
+                <h2>04. Parlez-nous de vous</h2>
+                
+                <div class="input-group-row">
+                    <div class="input-group">
+                        <label>Nom du demandeur</label>
+                        {{ form.nom_contact }}
+                    </div>
+                    <div class="input-group">
+                        <label>Prénom du demandeur</label>
+                        {{ form.prenom_contact }}
+                    </div>
+                </div>
+
+                <div id="conditional-mariage-bloc" class="conditional-bloc" style="display: none; margin-top: 10px; margin-bottom: 25px;">
+                    <div class="input-group-row" style="background: rgba(181, 148, 96, 0.03); padding: 20px; border-radius: 10px; border: 1px dashed rgba(181, 148, 96, 0.2);">
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label style="color: #b59460;">Prénom de l'Époux</label>
+                            {{ form.prenom_epoux }}
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label style="color: #b59460;">Prénom de l'Épouse</label>
+                            {{ form.prenom_epouse }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group-row">
+                    <div class="input-group">
+                        <label>Numéro de Téléphone</label>
+                        {{ form.telephone }}
+                    </div>
+                    <div class="input-group">
+                        <label>Adresse Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Votre histoire / Détails du projet</label>
+                    {{ form.message }}
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev">Retour</button>
+                    <button type="button" class="btn-next">Vérifier</button>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="5"> 
+                <h2>05. Récapitulatif de votre demande</h2>
+                <div class="summary-wrapper" id="summary-content">
+                    </div>
+                    <div class="summary-total" style="text-align: center; margin: 20px 0; padding: 15px; border-top: 2px solid #b59460;">
+    <h3 style="color: black;">Estimation Totale : 
+        <span id="total-affichage" style="color: #b59460; font-size: 1.5em;">0 DA</span>
+    </h3>
+</div>
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev">Modifier</button>
+                    <button type="submit" class="btn-submit">Confirmer la Réservation</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<script src="{% static 'js/reservation.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<section class="education-header">
+    <h1 class="font-title">L'Art de l'Image</h1>
+    <p>Le savoir-faire derrière la caméra : de la capture à la narration.</p>
+</section>
+
+<div class="education-container">
+    {% for article in articles %}
+    <article class="edu-block {% if forloop.counter|divisibleby:2 %}reverse{% endif %}">
+        <div class="edu-media">
+            <img src="{{ article.image.url }}" alt="{{ article.titre }}">
+        </div>
+        <div class="edu-content">
+            <span class="category-tag">{{ article.get_categorie_display }}</span>
+            <h2>{{ article.titre }}</h2>
+            <p>{{ article.contenu|linebreaks }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

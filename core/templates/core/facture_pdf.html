@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Contrat de Prestation Audiovisuelle — Dynastie Film</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #ffffff;
+        }
+        .header {
+            border-bottom: 2px solid #b59460;
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+        .brand {
+            font-size: 26px;
+            font-weight: 700;
+            color: #b59460;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .contract-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            color: #111111;
+        }
+        .meta-box {
+            float: right;
+            text-align: right;
+            font-size: 13px;
+            color: #555555;
+            line-height: 1.5;
+        }
+        .clear {
+            clear: both;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #b59460;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            border-left: 3px solid #b59460;
+            padding-left: 10px;
+        }
+        .parties-box, .description-box {
+            font-size: 14px;
+            background-color: #fafafa;
+            padding: 15px 20px;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .parties-box p, .description-box p {
+            margin: 6px 0;
+        }
+        .bold {
+            font-weight: 600;
+            color: #111111;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        th {
+            background-color: #111111;
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 13.5px;
+            vertical-align: middle;
+        }
+        .table-total {
+            background-color: #fafafa;
+            font-weight: bold;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .price-tag {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #111111;
+        }
+        .clauses {
+            font-size: 12px;
+            color: #444444;
+            text-align: justify;
+            line-height: 1.7;
+        }
+        .clauses ol {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .clauses li {
+            margin-bottom: 8px;
+        }
+        .signatures {
+            margin-top: 50px;
+            width: 100%;
+        }
+        .signature-col {
+            width: 50%;
+            float: left;
+            font-size: 13px;
+        }
+        .signature-space {
+            margin-top: 45px;
+            border-bottom: 1px dashed #cccccc;
+            width: 70%;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="meta-box">
+            <span class="bold">Contrat N° :</span> CTR-{{ reservation.id }}-{% now "Ymd" %}<br>
+            <span class="bold">Date d'édition :</span> {% now "d/m/Y" %}<br>
+            <span class="bold">Statut du dossier :</span> Validé par l'Acompte
+        </div>
+        <div class="brand">DYNASTIE FILM</div>
+        <div class="contract-title">Contrat d'Engagement & de Prestation Audiovisuelle</div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="section-title">1. Parties Contractantes</div>
+    <div class="parties-box">
+        <p><span class="bold">Le Prestataire :</span> <span style="letter-spacing: 0.5px;">DYNASTIE FILM</span>, Production audiovisuelle cinématographique.</p>
+        <p><span class="bold">Le Client (Demandeur) :</span> {{ reservation.prenom_contact }} {{ reservation.nom_contact }}</p>
+        <p><span class="bold">Coordonnées du client :</span> {{ reservation.email }} | {{ reservation.telephone }}</p>
+    </div>
+
+    <div class="section-title">2. Objet du Contrat & Description du Projet</div>
+    <div class="description-box">
+        <p><span class="bold">Nature de la Prestation :</span> {{ reservation.get_prestation_type_display }}</p>
+        <p><span class="bold">Date de l'événement retenue :</span> {{ reservation.date_event|date:"d F Y" }}</p>
+        <p><span class="bold">Lieu d'exécution :</span> {{ reservation.lieu }}</p>
+        
+        {% if reservation.prestation_type == 'MARIAGE' and reservation.prenom_epoux %}
+            <p><span class="bold">Bénéficiaires de l'union :</span> {{ reservation.prenom_epoux }} & {{ reservation.prenom_epouse }}</p>
+        {% endif %}
+        
+        <p><span class="bold">Description & Exigences du client :</span></p>
+        <p style="font-style: italic; color: #555555; margin-top: 5px; padding-left: 10px; border-left: 2px solid #b59460;">
+            {{ reservation.message|default:"Aucune spécification particulière ou note complémentaire mentionnée." }}
+        </p>
+    </div>
+
+    <div class="section-title">3. Barème Officiel de nos Prestations Forfaitaires</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Type de Prestation</th>
+                <th>Spécifications & Formats de Production</th>
+                <th class="text-right">Tarif Forfaitaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr {% if reservation.prestation_type == 'MARIAGE' and reservation.mariage_horaire != 'SOIREE' %}style="background-color: #fbf9f5; font-weight: bold;"{% endif %}>
+                <td>Mariage Standard (08h - 18h)</td>
+                <td>Couverture complète de journée, multicam cinéma, étalonnage de luxe.</td>
+                <td class="text-right price-tag">60 000 DA</td>
+            </tr>
+            <tr {% if reservation.prestation_type == 'MARIAGE' and reservation.mariage_horaire == 'SOIREE' %}style="background-color: #fbf9f5; font-weight: bold;"{% endif %}>
+                <td>Mariage Soirée (08h - Fin de soirée)</td>
+                <td>Couverture intégrale étendue jusqu'à la fin des festivités nocturnes.</td>
+                <td class="text-right price-tag">62 000 DA</td>
+            </tr>
+            <tr {% if reservation.prestation_type == 'CIRCONCISION' %}style="background-color: #fbf9f5; font-weight: bold;"{% endif %}>
+                <td>Circoncision</td>
+                <td>Reportage axé sur les rituels familiaux, captures des moments clés.</td>
+                <td class="text-right price-tag">50 000 DA</td>
+            </tr>
+            <tr {% if reservation.prestation_type == 'EDITORIAL' %}style="background-color: #fbf9f5; font-weight: bold;"{% endif %}>
+                <td>Session Éditoriale / Mode</td>
+                <td>Shooting studio ou extérieur, direction artistique, retouches avancées.</td>
+                <td class="text-right price-tag">30 000 DA</td>
+            </tr>
+            <tr {% if reservation.prestation_type == 'CORPORATE' %}style="background-color: #fbf9f5; font-weight: bold;"{% endif %}>
+                <td>Corporate / Événementiel</td>
+                <td>Tarif de base (évolutif selon exigences complexes du client).</td>
+                <td class="text-right price-tag">30 000 DA</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">4. Décompte Financier Appliqué (Selon Choix & Options)</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Désignation de l'élément retenu</th>
+                <th class="text-right">Tarif Calculé</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="bold">{{ reservation.get_prestation_type_display }}</span>
+                    {% if reservation.prestation_type == 'MARIAGE' %}
+                        - Formule {{ reservation.get_mariage_horaire_display }}
+                    {% endif %}
+                </td>
+                <td class="text-right price-tag">{{ prix_base }} DA</td>
+            </tr>
+
+            {% if reservation.jours_supplementaires > 0 %}
+            <tr>
+                <td>Prolongation : {{ reservation.jours_supplementaires }} journée(s) supplémentaire(s) (+35 000 DA / jour)</td>
+                <td class="text-right price-tag">+ {{ surplus_jours }} DA</td>
+            </tr>
+            {% endif %}
+
+            {% if reservation.option_drone %}
+            <tr>
+                <td>Option Matériel : Couverture et prises de vue aériennes par Drone professionnel</td>
+                <td class="text-right price-tag">+ {{ surplus_drone }} DA</td>
+            </tr>
+            {% endif %}
+
+            {% if reservation.hors_wilaya %}
+            <tr>
+                <td>Logistique : Déplacement et couverture de l'équipe hors Wilaya de Tizi Ouzou</td>
+                <td class="text-right price-tag">+ {{ surplus_deplacement }} DA</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td class="text-right bold" style="color: #b59460;">Acompte Forfaitaire Reçu (Reçu validé) :</td>
+                <td class="text-right price-tag bold" style="color: #b59460;">- {{ acompte }} DA</td>
+            </tr>
+
+            <tr class="table-total">
+                <td class="text-right uppercase">Solde Restant Dû (À régler le jour de l'événement) :</td>
+                <td class="text-right price-tag" style="font-size: 15px; border-bottom: 2px double #111111; color: #111;">
+                    {{ reste_a_payer }} DA
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">5. Conditions Générales d'Engagement</div>
+    <div class="clauses">
+        <ol>
+            <li><span class="bold">Réservation Ferme :</span> Le versement de l'acompte forfaitaire obligatoire de <span class="bold">20 000 DA</span> formalise le verrouillage ferme et irrévocable de la date sélectionnée au calendrier de production.</li>
+            <li><span class="bold">Règlement du solde :</span> Le montant restant dû (<span class="bold">{{ reste_a_payer }} DA</span>) devra être intégralement acquitté auprès de l'équipe de tournage le jour J, avant le début officiel des prises de vues.</li>
+            <li><span class="bold">Annulation :</span> En cas de désistement ou d'annulation unilatérale de la part du client, l'acompte de 20 000 DA sera conservé par le prestataire à titre d'indemnité d'immobilisation technique.</li>
+        </ol>
+    </div>
+
+    <div class="signatures">
+        <div class="signature-col">
+            <p class="bold">Pour le Client (Lu et approuvé)</p>
+            <p style="font-size: 11px; color:#888;">{{ reservation.prenom_contact }} {{ reservation.nom_contact }}</p>
+            <div class="signature-space"></div>
+        </div>
+        <div class="signature-col">
+            <p class="bold">Pour l'Équipe DYNASTIE FILM</p>
+            <p style="font-size: 11px; color:#888;">Signature et cachet juridiques du studio</p>
+            <div class="signature-space"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+</body>
+</html>

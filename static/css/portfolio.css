@@ -1,0 +1,69 @@
+/* Hero Slide */
+.hero-slide { height: 80vh; width: 100%; position: relative; }
+.hero-video { width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { 
+    position: absolute; inset: 0; z-index: 10; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    background: rgba(0,0,0,0.3); pointer-events: none; 
+}
+.hero-overlay h1 { font-family: 'EdwardianScript'; font-size: 8rem; color: white; }
+.hero-overlay p { font-family: 'PlayfairDisplay'; font-size: 2rem; color: white; margin-top: 1rem; }
+
+/* Portfolio Grid */
+/* Section Manifeste */
+/* Fond global pour toute la page (ajuste selon ton besoin) */
+
+/* Section Manifeste - Texte foncé */
+.manifeste-section { 
+    max-width: 800px; margin: 80px auto; text-align: center; padding: 0 20px; 
+    color: #333; 
+}
+.manifeste-section h2 { font-size: 3rem; margin-bottom: 20px; color: #000; font-family: 'Playfair Display', serif; }
+.manifeste-section p { font-size: 1.25rem; line-height: 1.8; color: #555; font-family: 'Playfair Display', serif; }
+
+/* Grille et Blocs avec Ombres */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.portfolio-block { 
+    display: flex; flex-direction: column; gap: 15px; 
+    background: #ffffff; /* Fond blanc pour le bloc */
+    padding: 15px;       /* Un petit cadre interne */
+    border-radius: 8px;  /* Bords arrondis pour le côté moderne */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Ombre douce */
+    transition: transform 0.3s ease;
+}
+
+.portfolio-block:hover {
+    transform: translateY(-5px); /* Léger effet de soulèvement au survol */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.portfolio-block h3 { 
+    font-family: 'Playfair Display', serif; 
+    font-size: 1.5rem; 
+    color: #000; 
+}
+
+/* Media side avec ombre interne ou bordure fine */
+.media-side {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    background: #e0e0e0; /* Fond gris clair pendant le chargement */
+    border-radius: 4px;
+}
+
+.media-side img, 
+.media-side video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}

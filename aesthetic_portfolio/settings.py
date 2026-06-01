@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-7#bb-p#^ct*#fm#&*$vc0v!(70-#^6zae!vdy0&i_#fxhcqt7y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['audible-hardly-ipad.ngrok-free.dev ', '.ngrok-free.dev', '192.168.1.8', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -110,4 +110,20 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'doukiyanis@gmail.com'  # 👈 Ton adresse Gmail
+
+# ⚠️ Ce n'est PAS le mot de passe de ton compte Google, voir étape ci-dessous
+EMAIL_HOST_PASSWORD = 'ahterexigdpnpymg'  
+DEFAULT_FROM_EMAIL = 'Dynastie Film <ton-email-pro@gmail.com>'
+CSRF_TRUSTED_ORIGINS = [
+    'https://audible-hardly-ipad.ngrok-free.dev',
+    'https://*.ngrok-free.dev' # Pour être tranquille si l'URL change
+]

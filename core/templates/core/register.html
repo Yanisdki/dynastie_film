@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="auth-section" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0c0c0c; padding: 40px 20px; position: relative; overflow: hidden;">
+    
+    <div class="auth-bg-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(181, 148, 96, 0.05) 0%, rgba(0,0,0,0) 70%); pointer-events: none;"></div>
+
+    <div class="auth-container" style="width: 100%; max-width: 460px; background: #121212; border: 1px solid rgba(181, 148, 96, 0.15); padding: 50px 40px; border-radius: 4px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); position: relative; z-index: 2;">
+        
+        <div class="auth-header" style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-family: 'Playfair Display', serif; color: #b59460; font-size: 2rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; font-weight: 400;">Dynastie Film</h1>
+            <div style="width: 30px; height: 1px; background: #b59460; margin: 0 auto 15px;"></div>
+            <p style="font-family: 'Inter', sans-serif; color: #666; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;">Créer un profil privé</p>
+        </div>
+
+        {% if form.errors %}
+            <div class="auth-errors" style="background: rgba(211, 47, 47, 0.1); border: 1px solid #d32f2f; color: #ff6b6b; padding: 15px; border-radius: 2px; font-size: 0.85rem; margin-bottom: 25px; font-family: 'Inter', sans-serif;">
+                <p style="margin-top: 0; font-weight: 600;">Veuillez corriger les erreurs suivantes :</p>
+                <ul style="padding-left: 20px; margin-bottom: 0;">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="POST" autocomplete="off" style="font-family: 'Inter', sans-serif;">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="auth-input-group" style="margin-bottom: 25px; position: relative;">
+                    <label for="{{ field.id_for_label }}" style="display: block; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">
+                        {{ field.label }}
+                    </label>
+                    
+                    <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                           name="{{ field.html_name }}" 
+                           id="{{ field.id_for_label }}" 
+                           required 
+                           style="width: 100%; background: #1a1a1a; border: 1px solid #2c2c2c; color: #fff; padding: 14px 16px; font-size: 0.95rem; border-radius: 0; transition: all 0.4s ease; box-sizing: border-box; outline: none;">
+                    
+                    {% if field.help_text %}
+                        <small style="display: block; color: #444; font-size: 0.75rem; margin-top: 6px; line-height: 1.4;">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="auth-btn" style="width: 100%; background: #b59460; color: #000; border: none; padding: 16px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); margin-top: 15px;">
+                Créer mon compte
+            </button>
+        </form>
+
+        <div class="auth-footer" style="text-align: center; margin-top: 35px; font-family: 'Inter', sans-serif; border-top: 1px solid #1a1a1a; padding-top: 20px;">
+            <p style="color: #555; font-size: 0.85rem;">
+                Déjà inscrit ? 
+                <a href="{% url 'core:login' %}" style="color: #b59460; text-decoration: none; margin-left: 5px; border-bottom: 1px solid transparent; transition: border 0.3s;">
+                    Se connecter
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .auth-input-group input:focus {
+        border-color: #b59460 !important;
+        background: #1f1f1f !important;
+        box-shadow: 0 0 10px rgba(181, 148, 96, 0.1);
+    }
+    .auth-btn:hover {
+        background: #fff !important;
+        color: #000 !important;
+        letter-spacing: 4px !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .auth-footer a:hover {
+        border-bottom-color: #b59460 !important;
+    }
+</style>
+{% endblock %}

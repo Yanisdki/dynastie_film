@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@bienehito/fluid-dynamics": "^1.1.2",
+    "gsap": "^3.15.0",
+    "three": "^0.184.0"
+  }
+}

@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %} 
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+<section class="hero-slide swiper">
+    <div class="swiper-wrapper">
+        {% for slide in slides %}
+        <div class="swiper-slide">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="{{ slide.video.url }}" type="video/mp4">
+            </video>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="hero-overlay">
+        <h1 class="font-signature">Dynastie</h1>
+        <p class="font-title">Cinematography</p>
+    </div>
+</section>
+
+<section class="manifeste-section">
+    {% if manifeste %}
+        <h2 class="font-title">{{ manifeste.title }}</h2>
+        <p>{{ manifeste.description|linebreaksbr }}</p>
+    {% else %}
+        <h2 class="font-title">Notre Vision</h2>
+        <p>Texte par défaut en attente de configuration dans l'admin.</p>
+    {% endif %}
+</section>
+
+<div class="portfolio-grid">
+    {% for projet in projets %}
+    <article class="portfolio-block">
+        <div class="media-side">
+            <a href="{{ projet.fichier.url }}" class="glightbox" data-type="{% if projet.is_video %}video{% else %}image{% endif %}">
+                {% if projet.is_video %}
+                <video 
+                    class="portfolio-video" 
+                    src="{{ projet.fichier.url }}" 
+                    poster="{{ projet.image_de_couverture.url }}" 
+                    muted 
+                    playsinline 
+                    preload="none">
+                </video>
+                <div class="play-btn"><span>▶</span></div>
+            {% else %}
+                <img src="{{ projet.fichier.url }}" alt="{{ projet.titre }}">
+            {% endif %}
+            </a>
+        </div>
+        <div class="text-side">
+            <h3>{{ projet.titre }}</h3>
+            <p>Une esthétique unique pensée pour capturer l'essence de votre projet.</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script>
+    // 1. Lightbox
+    const lightbox = GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+
+    // 2. Swiper (Hero)
+    new Swiper('.swiper', {
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        effect: 'fade',
+        speed: 1000
+    });
+
+    // 3. Animation apparition au scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                // Lancer la vidéo si c'est une carte projet
+                const vid = entry.target.querySelector('.portfolio-video');
+                if (vid) {
+                    vid.play();
+                    setTimeout(() => { if(vid) vid.pause(); }, 7000);
+                }
+            }
+        });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.portfolio-card').forEach(card => observer.observe(card));
+</script>
+
+{% endblock %}

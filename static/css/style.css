@@ -1,76 +1,86 @@
-* {
+* 
+{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Edwardian Script ITC';
+    src: url('../fonts/EDWARDIANSCRIPTITC.TTF?v=1.0') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     
     font-family: 'Arial', sans-serif;
-    background: black;
+   
     color: white;
     overflow-x: hidden;
 }
+.animation-wrapper {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+     /* Couleur de fond sombre pour faire ressortir les titres */
+}
 
 .hero-fullscreen {
-    height: 100vh;
-    background: black;
-    position: relative;
+    position: fixed;
+   
+    
 }
+  
 
 /* PARENT : conteneur principal (fixed, occupe tout l'écran) */
 .titles-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 100;
-    transition: all 0.03s linear;
+    display: flex;
+    
+    
 }
 
 /* BOX COMMUNE pour les deux titres */
-.title-box {
-    position: absolute;
-    transition: all 0.03s linear;
-}
+
 
 /* DYNASTIE : en haut à gauche */
 .dynastie-box {
-    top: 10%;
-    left: 8%;
+   
+    letter-spacing: 0.1em;
+    
+    
 }
 
 /* FILM : en bas à droite */
 .film-box {
-    bottom: 50%;
-    right: 8%;
+    position: relative;
+    top:300px;
+    left: 450px;
+    letter-spacing: 0.1em;
+    
+
 }
 
+
 /* STYLES DES TITRES */
-.dynastie-title, .film-title {
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    margin: 0;
-    
-}
+
 
 .dynastie-title {
     font-size: 10vw;
+    color: #b59460; 
     opacity: 0;
-    transform: translateX(-50px);
     animation: slideInLeft 0.8s ease forwards;
     font-family: 'Playfair Display', serif;
 }
 
 .film-title {
-    font-size: 8vw;
+    font-size: 14vw;
+    color: #b59460; 
     opacity: 0;
-    transform: translateX(50px);
-    animation: slideInRight 0.8s ease 0.2s forwards;
+    animation: slideInRight 0.8s ease forwards;
     font-family: 'Edwardian Script ITC', cursive;
+    
 }
 
 @keyframes slideInLeft {
@@ -103,46 +113,248 @@ body {
 
 
 
-.photo-grid {
-    padding: 4rem 2rem;
-    background: black;
+/* En CSS pour plus de contrôle */
+.scroll-spacer {
+    height: 70vh;  /* 50% de la hauteur de l'écran */
+    background: transparent;
 }
 
-.grid-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-.grid-item {
-    aspect-ratio: 1 / 1;
-    background: #1a1a1a;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: rgba(255,255,255,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-.grid-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+    .scroll-spacer {
+        height: 20vh;  /* Moins d'espace sur mobile */
     }
 }
 
-@media (max-width: 480px) {
-    .grid-container {
+@media (max-width: 1024px) {
+    .animation-wrapper {
+        height: 50vh; /* On réduit légèrement la hauteur du wrapper */
+    }
+
+    /* On resserre le positionnement de "FILM" pour les tablettes */
+    .film-box {
+        top: 200px;
+        left: 250px;
+    }
+
+    .dynastie-title {
+        font-size: 12vw; /* On augmente légèrement le ratio pour compenser la largeur d'écran */
+    }
+
+    .film-title {
+        font-size: 16vw;
+    }
+}
+
+/* --- 2. Smartphones Standards (Max 768px) --- */
+@media (max-width: 768px) {
+    .animation-wrapper {
+        height: 60vh; /* Ajustement de la zone sur mobile */
+    }
+
+    /* SUR MOBILE : Les positionnements absolus/fixes en pixels (450px) cassent le layout.
+       On passe les boîtes en disposition fluide pour aligner les textes élégamment.
+    */
+    .titles-wrapper {
+        display: flex;
+        flex-direction: column; /* On superpose les éléments verticalement */
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100%;
+        padding: 0 20px;
+    }
+
+    .dynastie-box {
+        align-self: flex-start; /* "Dynastie" reste calé plutôt vers la gauche */
+        margin-left: 5%;
+        margin-top: 50px;
+    }
+
+    .film-box {
+        /* On annule complètement les valeurs absolues de la version ordinateur */
+        position: relative;
+        top: 0 !important; 
+        left: 0 !important;
+        align-self: flex-end;  /* "Film" vient se caler élégamment en bas à droite */
+        margin-right: 5%;
+             /* Léger chevauchement esthétique propre aux scripts cursifs */
+    }
+
+    /* Optimisation des tailles de police pour mobile */
+    .dynastie-title {
+        font-size: 14vw; /* Taille d'impact idéale sur un plan vertical */
+    }
+
+    .film-title {
+        font-size: 20vw; /* La police cursive a besoin d'être plus grande pour rester lisible */
+    }
+}
+
+/* --- 3. Petits Smartphones (Max 360px - ex: iPhone SE / Galaxy S8 mini) --- */
+@media (max-width: 360px) {
+    .dynastie-title {
+        font-size: 15vw;
+    }
+
+    .film-title {
+        font-size: 22vw;
+    }
+
+    .film-box {
+        margin-top: -10px; /* On ajuste le chevauchement sur les écrans très étroits */
+    }
+}
+
+.welcome-section {
+    position: relative;
+    min-height: 80vh; /* Donne de l'espace pour respirer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    z-index: 10;
+}
+
+.welcome-content {
+    max-width: 800px;
+    text-align: center;
+    transform: scale(0.5); /* Commence légèrement plus petit pour l'effet de zoom */
+    /* On l'initialise invisible pour l'animation GSAP */
+    opacity: 0;
+    
+}
+
+.welcome-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    line-height: 1.4;
+    color: black;
+    margin-bottom: 3rem;
+}
+.text-decor {
+    font-family: 'Edwardian Script ITC', cursive;
+    color:#b59460;
+    font-weight: bold;
+
+
+}
+
+/* Boutons */
+.welcome-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-welcome {
+    display: inline-block;
+    padding: 15px 40px;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+}
+
+.btn-outline {
+    color: black;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgb(88, 88, 88);
+    color: #050505;
+    border-color: #454545;
+}
+
+.btn-filled {
+    background: #7e7e7e;
+    color: #050505;
+    border: 1px solid #555555;
+}
+
+.btn-filled:hover {
+    background: transparent;
+    color: #000000;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive pour les petits écrans */
+@media (max-width: 768px) {
+    .welcome-text {
+        font-size: 1.8rem;
+    }
+    .welcome-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn-welcome {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+.main-footer {
+    
+    padding: 80px 10% 40px 10%;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.15em;
+    color: #b59460;
+}
+
+.footer-col h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #ffd700;
+    margin-bottom: 20px;
+}
+
+.footer-col a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-col a:hover {
+     color: #b59460;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 30px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #444;
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .editorial-section {
+        padding: 10vh 5%;
+    }
+    .project-strip {
+        height: 50vh;
+        padding: 30px 5%;
     }
 }

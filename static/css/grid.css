@@ -1,0 +1,134 @@
+.photo-grid {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+   
+    display: flex;
+    max-width: 100%; 
+    
+}
+
+.grid-container {
+    display: flex;
+    
+    flex-direction: row;
+    gap: 20px;
+}
+
+.grid {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    position: relative;
+}
+
+/* Tailles différentes pour chaque item */
+.item1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+   
+}
+
+.item2 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.item3 {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.item4 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    
+}
+
+.item5 {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.item6 {
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    
+}
+
+/* Effet au survol */
+
+
+/* Pour ajouter de vraies images (optionnel) */
+.grid {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Exemple avec des images de démonstration */
+
+.item1 { background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%), url('https://picsum.photos/id/1015/600/400'); background-blend-mode: overlay; }
+.item2 { background-image: url('https://picsum.photos/id/1018/400/400'); }
+.item3 { background-image: url('https://picsum.photos/id/104/400/400'); }
+.item4 { background-image: url('https://picsum.photos/id/106/400/600'); }
+.item5 { background-image: url('https://picsum.photos/id/107/400/400'); }
+.item6 { background-image: url('https://picsum.photos/id/116/600/400'); }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .item1, .item4, .item6 {
+        grid-column: span 1;
+        grid-row: span 1;
+        aspect-ratio: 1 / 1;
+    }
+    
+    .photo-grid {
+        padding: 20px;
+    }
+}
+
+/* Animation au chargement */
+.grid {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.item1 { animation-delay: 0.1s; }
+.item2 { animation-delay: 0.2s; }
+.item3 { animation-delay: 0.3s; }
+.item4 { animation-delay: 0.4s; }
+.item5 { animation-delay: 0.5s; }
+.item6 { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.text-grid {
+    margin-top: -10px;       /* Crée de l'espace sous les cartes */
+    text-align: center;
+    z-index: 5;
+    opacity: 0;             /* Initialisé à 0 pour l'animer proprement avec GSAP */
+    transform: translateY(30px);
+}
+
+.text-grid-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #000000;
+    letter-spacing: 1px;
+}

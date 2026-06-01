@@ -1,124 +1,83 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    const dynastieBox = document.querySelector('.dynastie-box');
-    const filmBox = document.querySelector('.film-box');
-    const dynastieTitle = document.querySelector('.dynastie-title');
-    const filmTitle = document.querySelector('.film-title');
-    
-    if (!dynastieBox || !filmBox) return;
-    
-    // Positions initiales (seront remplies après le chargement)
-    let startDynastieLeft = 0, startDynastieTop = 0;
-    let startFilmLeft = 0, startFilmTop = 0;
-    let startDynastieSize = 0, startFilmSize = 0;
-    
-    // Positions finales
-    const endLeftD = 30;
-    const endLeftF = 75;
-    const endDynastieTop = 30;
-    const endFilmTop = 60;
-    const endSize = 30;
-    
-    const maxScroll = 400;
-    
-    // Flag pour savoir si on a déjà capturé les positions initiales
-    let hasInitialPositions = false;
-    
-    function getInitialPositions() {
-        // Ne capturer qu'une seule fois, après que le CSS a tout positionné
-        if (hasInitialPositions) return;
-        
-        const dynastieRect = dynastieBox.getBoundingClientRect();
-        startDynastieLeft = dynastieRect.left;
-        startDynastieTop = dynastieRect.top;
-        
-        const filmRect = filmBox.getBoundingClientRect();
-        startFilmLeft = filmRect.left;
-        startFilmTop = filmRect.top;
-        
-        startDynastieSize = parseFloat(getComputedStyle(dynastieTitle).fontSize);
-        startFilmSize = parseFloat(getComputedStyle(filmTitle).fontSize);
-        
-        hasInitialPositions = true;
-        
-        console.log('Positions initiales capturées:', {
-            dynastie: { left: startDynastieLeft, top: startDynastieTop },
-            film: { left: startFilmLeft, top: startFilmTop }
-        });
+gsap.registerPlugin(ScrollTrigger);
+
+// On cible le conteneur qui englobe les deux titres
+const TitlesWrapper = document.querySelector(".hero-fullscreen .titles-wrapper");
+const Dynastie = document.querySelector(".hero-fullscreen .dynastie-box");
+const Film = document.querySelector(".hero-fullscreen .film-box");
+
+
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: ".hero-fullscreen",
+        start: "top top",
+        end: "bottom top",
+        scrub: 1.5, // Un peu plus bas pour plus de fluidité visuelle
+        pinSpacing: true,
+        invalidateOnRefresh: true
     }
+});
+
+// 1. On déplace TOUT le bloc d'un coup dans le coin supérieur gauche
+tl.to(TitlesWrapper, {
+    x: () => {
+        const rect = TitlesWrapper.getBoundingClientRect();
+        return -(rect.left - 20); // Marge de 20px du bord gauche
+    },
+    y: () => {
+        const rect = TitlesWrapper.getBoundingClientRect();
+        return -(rect.top - 20); // Marge de 20px du haut
+    },
+    scale: 0.2,
+    transformOrigin: "left top" // Pivot fixe en haut à gauche
+}, 0);
+
+// 2. On rapproche simplement "Film" de "Dynastie" pour compenser l'espace vide du CSS d'origine
+tl.to(Film, {
+    // Si l'écran est un mobile/tablette (<= 1024px), x vaut 0 pour rester centré.
+    // Sur ordinateur (> 1024px), on applique ton décalage d'origine de -1220px.
+    x: () => window.innerWidth <= 1024 ? 0 : -1220, 
     
-    function updateTitles() {
-        // Ne rien faire tant qu'on n'a pas les positions initiales
-        if (!hasInitialPositions) return;
-        
-        let scrollY = window.scrollY;
-        if (scrollY < 0) scrollY = 0;
-        
-        let progress = Math.min(scrollY / maxScroll, 1);
-        
-        // Si progress = 0, on n'applique aucun style (on laisse le CSS)
-        if (progress === 0) {
-            // Remettre à zéro les styles inline
-            dynastieBox.style.left = '';
-            dynastieBox.style.top = '';
-            dynastieBox.style.right = '';
-            dynastieBox.style.bottom = '';
-            
-            filmBox.style.left = '';
-            filmBox.style.top = '';
-            filmBox.style.right = '';
-            filmBox.style.bottom = '';
-            
-            dynastieTitle.style.fontSize = '';
-            filmTitle.style.fontSize = '';
-            return;
-        }
-        
-        // DYNASTIE
-        const currentDynastieLeft = (endLeftD * progress) + (startDynastieLeft * (1 - progress));
-        const currentDynastieTop = (endDynastieTop * progress) + (startDynastieTop * (1 - progress));
-        
-        dynastieBox.style.left = `${currentDynastieLeft}px`;
-        dynastieBox.style.top = `${currentDynastieTop}px`;
-        dynastieBox.style.right = 'auto';
-        dynastieBox.style.bottom = 'auto';
-        
-        // FILM
-        const currentFilmLeft = (endLeftF * progress) + (startFilmLeft * (1 - progress));
-        const currentFilmTop = (endFilmTop * progress) + (startFilmTop * (1 - progress));
-        
-        filmBox.style.left = `${currentFilmLeft}px`;
-        filmBox.style.top = `${currentFilmTop}px`;
-        filmBox.style.right = 'auto';
-        filmBox.style.bottom = 'auto';
-        
-        // Tailles
-        const currentDynastieSize = (endSize * progress) + (startDynastieSize * (1 - progress));
-        const currentFilmSize = (endSize * progress) + (startFilmSize * (1 - progress));
-        
-        dynastieTitle.style.fontSize = `${currentDynastieSize}px`;
-        filmTitle.style.fontSize = `${currentFilmSize}px`;
+    // Si mobile, on remonte juste un poil (-10px) pour coller à Dynastie.
+    // Sur ordinateur, on applique ton décalage d'origine de -100px.
+    y: () => window.innerWidth <= 1024 ? -10 : -100,
+    
+    transformOrigin: "left top"
+}, 0);
+
+
+
+
+const WelcomeSection = document.querySelector(".welcome-section");
+const WelcomeContent = document.querySelector(".welcome-content");
+
+const welcomeTl = gsap.timeline({
+    scrollTrigger: {
+        trigger: WelcomeSection,
+        start: "top top",
+        end: () => `+=${window.innerHeight * 0.9}`, // Durée totale du blocage à l'écran
+        pin: true,                                 // Fige la section au scroll
+        scrub: 1,                                  // Animation synchronisée à la molette
+        invalidateOnRefresh: true               // Recalcule proprement si on redimensionne,
+       
     }
-    
-    // Attendre que tout soit chargé (images, polices, etc.)
-    window.addEventListener('load', function() {
-        // Attendre un peu plus pour que les animations CSS soient terminées
-        setTimeout(() => {
-            getInitialPositions();
-            // Forcer une mise à jour pour que progress = 0 au début
-            updateTitles();
-        }, 100);
-    });
-    
-    // Écouter le scroll
-    window.addEventListener('scroll', () => requestAnimationFrame(updateTitles));
-    
-    // Recalculer les positions au redimensionnement
-    window.addEventListener('resize', function() {
-        hasInitialPositions = false;
-        setTimeout(() => {
-            getInitialPositions();
-            updateTitles();
-        }, 100);
-    });
+});
+
+// [TEMPS 1] : Entrée en Fade-in + Scale qui grandit
+// Note : Pense à ajouter `scale: 0.8` dans ton CSS initial pour que l'effet soit visible
+welcomeTl.to(WelcomeContent, {
+    opacity: 1,
+    scale: 1,         // Revient à sa taille normale (100%)
+    duration: 1.2,    
+    ease: "power2.out"
+});
+
+// (Optionnel) Un tout petit temps de pause pour apprécier le texte au centre
+welcomeTl.to({}, { duration: 1 });
+
+// [TEMPS 2] : Le bloc monte vers le haut (Déplacement vertical) et s'efface
+welcomeTl.to(WelcomeContent, {
+    y: -200,          // Remplace par -100 pour monter (y: 100 le ferait descendre)
+    opacity: 0,       // On l'efface en même temps pour une transition propre vers la grille
+    duration: 1,
+    ease: "power2.in"
 });
