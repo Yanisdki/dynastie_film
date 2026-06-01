@@ -166,3 +166,6 @@ LOGGING = {
         },
     },
 }
+CSRF_TRUSTED_ORIGINS = [
+    'https://dynastie-film.onrender.com',
+]
