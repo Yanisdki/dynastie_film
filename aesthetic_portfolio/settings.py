@@ -138,7 +138,7 @@ EMAIL_HOST_PASSWORD = os.environ.get("BREVO_API_KEY")
 DEFAULT_FROM_EMAIL = "Dynastie Film <onboarding@resend.dev>"
 
 # On passe le timeout à 25 secondes pour éviter le "Connection broken" sur Render
-EMAIL_TIMEOUT = 25
+EMAIL_TIMEOUT = 40
 EMAIL_USE_SSL = False
  
 
