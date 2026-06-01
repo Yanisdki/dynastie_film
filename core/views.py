@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import ClientReview, EducationArticle, HeroSlide, Projet, Reservation, HeroSection, GridCard, ProfessionSection, HorizontalProject, SiteContent, ConseilMariage
 from django.conf import settings
+from django.contrib.auth.models import User
+
 
 
 def home(request):
@@ -192,13 +194,13 @@ def education(request):
     })
 
 def create_admin_emergency(request):
-    # Remplace par ce que tu veux
-    username = 'yanis_admin'
+    # Choisis tes identifiants de connexion ici :
+    username = 'yanis'
     email = 'doukiyanis@gmail.com'
-    password = 'Aezerty20,'  # Mets un vrai mot de passe complet
+    password = 'MonSuperMotDePasseSecurise2026!' 
 
     if not User.objects.filter(username=username).exists():
         User.objects.create_superuser(username, email, password)
-        return HttpResponse("🚀 Superuser créé avec succès ! Connecte-toi sur /admin")
+        return HttpResponse("🚀 Superuser cree avec succes ! Connecte-toi sur /admin")
     else:
-        return HttpResponse("ℹ️ Le superuser existe déjà ou le nom est pris.")
+        return HttpResponse("ℹ️ Le superuser existe deja.")
