@@ -134,3 +134,24 @@ EMAIL_HOST_PASSWORD = 'ahterexigdpnpymg'
 DEFAULT_FROM_EMAIL = 'Dynastie Film <ton-email-pro@gmail.com>'
 
 WHITENOISE_MANIFEST_STRICT = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
