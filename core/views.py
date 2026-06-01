@@ -1,4 +1,5 @@
 import json
+import traceback
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -113,7 +114,10 @@ L'équipe Dynastie Film.
                     fail_silently=False,
                 )
             except Exception as e:
-                print(f"Erreur d'envoi d'email: {e}")
+                    print("--- 🚨 CRASH ENVOI EMAIL 🚨 ---")
+                    print(f"Type de l'erreur : {type(e).__name__}")
+                    print(f"Message : {e}")
+                    traceback.print_exc()
 
             return redirect('core:reservation_success')
     else:
