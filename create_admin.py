@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 # Remplace par les identifiants que tu souhaites
 USERNAME = 'yanis'
 EMAIL = 'doukiyanis@gmail.com'
-PASSWORD = 'TonMotDePasseSecurise Ici'  # Mets un vrai mot de passe complet
+PASSWORD = 'Aezerty20'  # Mets un vrai mot de passe complet
 
 if not User.objects.filter(username=USERNAME).exists():
     User.objects.create_superuser(USERNAME, EMAIL, PASSWORD)
