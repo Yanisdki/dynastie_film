@@ -191,3 +191,14 @@ def education(request):
         'articles': articles
     })
 
+def create_admin_emergency(request):
+    # Remplace par ce que tu veux
+    username = 'yanis_admin'
+    email = 'doukiyanis@gmail.com'
+    password = 'Aezerty20,'  # Mets un vrai mot de passe complet
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username, email, password)
+        return HttpResponse("🚀 Superuser créé avec succès ! Connecte-toi sur /admin")
+    else:
+        return HttpResponse("ℹ️ Le superuser existe déjà ou le nom est pris.")
