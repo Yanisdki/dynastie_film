@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-7#bb-p#^ct*#fm#&*$vc0v!(70-#^6zae!vdy0&i_#fxhcqt7y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
  
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', '.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -132,3 +132,5 @@ EMAIL_HOST_USER = 'doukiyanis@gmail.com'  # 👈 Ton adresse Gmail
 # ⚠️ Ce n'est PAS le mot de passe de ton compte Google, voir étape ci-dessous
 EMAIL_HOST_PASSWORD = 'ahterexigdpnpymg'  
 DEFAULT_FROM_EMAIL = 'Dynastie Film <ton-email-pro@gmail.com>'
+
+WHITENOISE_MANIFEST_STRICT = False
