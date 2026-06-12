@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Drone 3D | Dynastie Film{% endblock %}
+
+{% block content %}
+<div id="drone-canvas-container" style="width: 100%; height: 100vh; margin-top:20px;"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const container = document.getElementById('drone-canvas-container');
+    const scene = new THREE.Scene();
+    
+    // Liste pour stocker nos hélices
+    let helices = [];
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(3, 0, 1);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    const textureLoader = new THREE.TextureLoader();
+    const loadTex = (url) => {
+        const tex = textureLoader.load(url);
+        tex.flipY = false;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        return tex;
+    };
+
+    const baseColor = loadTex("{% static 'drone/gltf_embedded_0.png' %}");
+    const pbrMap = loadTex("{% static 'drone/gltf_embedded_1.png' %}");
+    const normalMap = loadTex("{% static 'drone/gltf_embedded_2.png' %}");
+
+    const loader = new GLTFLoader();
+    loader.load("{% static 'drone/drone_gltf.glb' %}", (gltf) => {
+        const drone = gltf.scene;
+
+        drone.traverse((node) => {
+            if (node.isMesh) {
+                // Application des textures
+                node.material.map = baseColor;
+                node.material.normalMap = normalMap;
+                node.material.aoMap = pbrMap;
+                node.material.roughnessMap = pbrMap;
+                node.material.metalnessMap = pbrMap;
+                node.material.needsUpdate = true;
+
+                // --- POINT CLÉ : IDENTIFIER LES HÉLICES ---
+                // Remplace "Propeller" par le nom qui apparaît dans ta console F12
+                if (node.name.toLowerCase().includes("propeller") || node.name.toLowerCase().includes("helice")) {
+                    helices.push(node);
+                    console.log("Hélice ajoutée :", node.name);
+                }
+            }
+        });
+
+        scene.add(drone);
+    });
+
+    window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Faire tourner manuellement les hélices détectées
+        helices.forEach((h) => {
+            h.rotation.z += 0.5; // Change 'z' par 'x' ou 'y' si l'axe ne tourne pas dans le bon sens
+        });
+        
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+</script>
+{% endblock %}

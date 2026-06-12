@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/dates-reservees/', views.get_dates_reservees, name='get_dates_reservees'),
     path('secure-create-admin-xyz789/', views.create_admin_emergency),
     path('portfolio/', views.portfolio, name='portfolio'),
+    path('test-drone/', views.page_drone_test, name='test_drone'),
     
 ]
 if settings.DEBUG:

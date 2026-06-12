@@ -1,4 +1,4 @@
-/* Réinitialisation de base pour la nav */
+/* --- Réinitialisation de base --- */
 .main-nav {
     position: fixed;
     top: 24px;
@@ -9,9 +9,11 @@
     justify-content: center;
     padding: 0 20px;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    
 }
 
-/* La capsule flottante */
+
+/* --- La capsule flottante (Desktop) --- */
 .nav-container {
     display: flex;
     align-items: center;
@@ -20,14 +22,14 @@
     max-width: 1100px;
     padding: 15px 50px;
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.03); /* Fond ultra léger */
-    border: 1px solid rgba(255, 255, 255, 0.08); /* Bordure subtile */
-    backdrop-filter: blur(12px); /* L'effet de verre dépoli */
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Identité / Logo */
+/* --- Identité / Logo --- */
 .nav-brand a {
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
@@ -43,7 +45,7 @@
     opacity: 0.7;
 }
 
-/* Liste de liens */
+/* --- Liste de liens --- */
 .nav-links {
     display: flex;
     align-items: center;
@@ -53,9 +55,8 @@
     padding: 0;
 }
 
-/* Liens individuels */
 .nav-item {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -64,10 +65,8 @@
     position: relative;
     padding: 6px 0;
     transition: color 0.3s ease;
-    
 }
 
-/* Animation de la ligne au survol */
 .nav-item::after {
     content: '';
     position: absolute;
@@ -79,7 +78,6 @@
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    -webkit-text-stroke: 1px #ffffff;
 }
 
 .nav-item:hover {
@@ -91,9 +89,8 @@
     transform-origin: left;
 }
 
-/* Bouton Compte / Action */
+/* --- Bouton Compte --- */
 .nav-btn {
-    font-family: system-ui, -apple-system, sans-serif;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -108,6 +105,7 @@
     font-weight: 500;
     transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
+
 .nav-btn .btn-icon {
     display: none;
     width: 18px;
@@ -117,92 +115,60 @@
 .nav-btn:hover {
     background: #d79b3b;
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive : Adaptation pour les petits écrans */
-
-
+/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 768px) {
-    /* 1. On détache la nav du haut et on l'ancre en bas de l'écran */
+    /* La clé ici : on empêche les clics sur le parent pour ne pas bloquer le contenu */
     .main-nav {
         top: auto;
-        bottom: 20px; /* Aligné à 20px du bas de l'écran */
-        left: 0;
-        width: 100%;
+        bottom: 20px;
         padding: 0 16px;
         position: fixed;
+        pointer-events: none; 
     }
 
-    /* 2. Style de la capsule "Apple Dock" */
     .nav-container {
+        pointer-events: auto; /* On autorise les clics uniquement sur la bulle */
         padding: 10px 20px;
         width: 100%;
-        max-width: 480px; /* Limite la largeur max sur les grands téléphones */
+        max-width: 480px;
         margin: 0 auto;
-        border-radius: 30px; /* Bel arrondi style iOS */
-        background: rgba(15, 15, 15, 0.4); /* Fond sombre semi-transparent pour détacher les textes blancs */
+        border-radius: 30px;
+        background: rgba(15, 15, 15, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(20px); /* Flou plus intense pour l'effet Dock */
-        -webkit-backdrop-filter: blur(20px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4); /* Ombre portée douce */
-        flex-direction: row; /* On force l'alignement en ligne */
+        backdrop-filter: blur(20px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
 
-    /* 3. On masque le texte du logo */
-    .nav-brand {
-        display: none !important;
-    }
+    .nav-brand { display: none !important; }
 
-    /* 4. Organisation des liens à l'intérieur du Dock */
     .nav-links {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        align-items: center;
         gap: 0;
     }
 
-    /* 5. Style des onglets de navigation */
     .nav-item {
-        font-size: 0.72rem;
-        letter-spacing: 0.01em;
-        font-weight: 500;
+        font-size: 0.7rem;
         color: rgba(255, 255, 255, 0.65);
-        padding: 8px 4px;
-        transition: color 0.2s ease;
+        padding: 10px 5px;
     }
 
-    .nav-item:hover, .nav-item:active {
-        color: #ffffff;
-    }
+    .nav-item::after { display: none !important; }
 
-    /* On désactive l'effet de barre sous le texte sur mobile (pas adapté au tactile) */
-    .nav-item::after {
-        display: none !important;
-    }
-
-    /* 6. Bouton Compte (Icône seule) */
-    .nav-btn .btn-text {
-        display: none; /* Masque le mot "Compte" */
-    }
+    .nav-btn .btn-text { display: none; }
 
     .nav-btn .btn-icon {
         display: block;
-        width: 18px;
-        height: 18px;
-        color: rgba(255, 255, 255, 0.65);
-        transition: color 0.2s ease;
-    }
-
-    .nav-btn:hover .btn-icon, .nav-btn:active .btn-icon {
-        color: #ffffff;
+        width: 20px;
+        height: 20px;
+        color: #fff;
     }
 
     .nav-btn {
         background: transparent;
-        padding: 8px;
-        border: none;
+        padding: 10px;
     }
 }

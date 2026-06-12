@@ -54,7 +54,7 @@ const welcomeTl = gsap.timeline({
     scrollTrigger: {
         trigger: WelcomeSection,
         start: "top top",
-        end: () => `+=${window.innerHeight * 0.9}`, // Durée totale du blocage à l'écran
+        end: () => `+=${window.innerHeight * 0.3}`, // Durée totale du blocage à l'écran
         pin: true,                                 // Fige la section au scroll
         scrub: 1,                                  // Animation synchronisée à la molette
         invalidateOnRefresh: true               // Recalcule proprement si on redimensionne,
@@ -67,7 +67,7 @@ const welcomeTl = gsap.timeline({
 welcomeTl.to(WelcomeContent, {
     opacity: 1,
     scale: 1,         // Revient à sa taille normale (100%)
-    duration: 1.2,    
+    duration: 0.6,    
     ease: "power2.out"
 });
 
@@ -76,8 +76,8 @@ welcomeTl.to({}, { duration: 1 });
 
 // [TEMPS 2] : Le bloc monte vers le haut (Déplacement vertical) et s'efface
 welcomeTl.to(WelcomeContent, {
-    y: -200,          // Remplace par -100 pour monter (y: 100 le ferait descendre)
-    opacity: 0,       // On l'efface en même temps pour une transition propre vers la grille
-    duration: 1,
+    y: -150,          // Remplace par -100 pour monter (y: 100 le ferait descendre)
+         
+    duration: 1.5,
     ease: "power2.in"
 });

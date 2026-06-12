@@ -1,6 +1,7 @@
 import json
 import traceback
-
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import ReservationForm, CustomUserCreationForm
@@ -208,3 +209,6 @@ def create_admin_emergency(request):
         return HttpResponse("🚀 Superuser cree avec succes ! Connecte-toi sur /admin")
     else:
         return HttpResponse("ℹ️ Le superuser existe deja.")
+    
+def page_drone_test(request):
+    return render(request, 'core/test_drone.html')

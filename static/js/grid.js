@@ -13,9 +13,10 @@ window.addEventListener("load", () => {
         scrollTrigger: {
             trigger: section,
             start: "top 60%",         // Bloque dès que la section est plein écran
-            end: () => `+=${window.innerHeight * 2}`, // Durée totale de l'effet (fusion + élévation)
+            end: () => `+=${window.innerHeight * 0.65}`, // Durée totale de l'effet (fusion + élévation)
             pin: true,                // Fige l'écran verticalement
             scrub: 1,                 // Animation fluide liée à la molette
+                        
             invalidateOnRefresh: true, // Recalcule proprement si on redimensionne
              // <-- Affiche les marqueurs de ScrollTrigger pour le debug (optionnel)
         }
@@ -49,7 +50,7 @@ window.addEventListener("load", () => {
 
     // On fait monter le conteneur entier
     tl.to(container, {
-        y: -150, 
+        y: -100, 
         ease: "power2.out"
     }); 
 

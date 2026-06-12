@@ -207,13 +207,13 @@ body {
 }
 
 .welcome-section {
-    position: relative;
-    min-height: 80vh; /* Donne de l'espace pour respirer */
+    position:relative;
+    height: 45vh;
     display: flex;
     align-items: center;
     justify-content: center;
     
-    z-index: 10;
+    z-index: 1;
 }
 
 .welcome-content {
