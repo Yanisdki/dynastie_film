@@ -132,3 +132,23 @@
     color: #000000;
     letter-spacing: 1px;
 }
+
+@media screen and (max-width: 1600px) and (max-height: 900px) {
+    .grid-container {
+        gap: 15px;
+    }
+    
+    .grid {
+        width: 250px;
+        height: 250px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Ajustement supplémentaire pour les très petits écrans */
+@media screen and (max-width: 1200px) {
+    .grid {
+        width: 220px;
+        height: 220px;
+    }
+}
