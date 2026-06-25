@@ -4,30 +4,74 @@
 {% block title %}Accueil - Dynastie Film{% endblock %}
 
 {% block content %}
-<div class="animation-wrapper">
-<div class="hero-fullscreen">
-    <div class="titles-wrapper">
-        <div class="title-box dynastie-box">
-            <h1 class="dynastie-title">{% if hero.title %}{{ hero.title }}{% else %}DYNASTIE{% endif %}</h1>
-        </div>
-        <div class="title-box film-box">
-            <h1 class="film-title">{% if hero.subtitle %}{{ hero.subtitle }}{% else %}Film{% endif %}</h1>
-        </div>
-    </div>
+<!-- ============================================================
+     HERO - Style Éditorial Luxe (inspiration RUNKERS)
+     ============================================================ -->
+<section class="hero-editorial" id="hero">
+    <!-- Image de fond -->
+    <div class="hero-editorial-bg">
+    <img src="{% static 'images/hero-section-img.jpg' %}" alt="Dynastie Film - Mariage" class="hero-editorial-image">
+    <div class="hero-editorial-overlay"></div>
 </div>
 
-<section class="welcome-section">
-    <div class="welcome-content">
-        <p class="welcome-text">
-            Bienvenue dans l'univers de Dynastie <span class="text-decor">Film.</span> Nous croyons que chaque instant mérite une esthétique intemporelle et une narration captivante.
+    <!-- Contenu superposé -->
+    <div class="hero-editorial-content">
+        <!-- Marque / Tagline en haut -->
+        <div class="hero-editorial-brand">
+            <span class="hero-editorial-tag">Dynastie Film</span>
+            <span class="hero-editorial-divider">—</span>
+            <span class="hero-editorial-location">Tizi Ouzou</span>
+        </div>
+
+        <!-- Titre principal (style magazine) -->
+        <h1 class="hero-editorial-title">
+            <span class="hero-editorial-line">Pour ceux qui</span>
+            <span class="hero-editorial-line hero-editorial-line-highlight">aiment intensément</span>
+        </h1>
+
+        <!-- Description romantique -->
+        <p class="hero-editorial-description">
+            Chaque histoire mérite d'être racontée avec élégance.<br>
+            Chaque instant, préservé pour l'éternité.
         </p>
-        <div class="welcome-buttons">
-            <a href="{% url 'core:portfolio' %}" class="btn-welcome btn-outline">Portfolio</a>
-            <a href="{% url 'core:reservation' %}" class="btn-welcome btn-filled">Réservation</a>
+
+        <!-- Call to action -->
+        <div class="hero-editorial-actions">
+            <a href="{% url 'core:portfolio' %}" class="hero-editorial-btn hero-editorial-btn-primary">
+                Découvrir nos histoires
+            </a>
+            <a href="{% url 'core:reservation' %}" class="hero-editorial-btn hero-editorial-btn-secondary">
+                Réserver
+            </a>
+        </div>
+
+        <!-- Indicateur de scroll -->
+        <div class="hero-editorial-scroll">
+            <span>Défilez</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
         </div>
     </div>
+
+    <!-- Élément décoratif : ligne dorée en bas -->
+    <div class="hero-editorial-accent"></div>
 </section>
-</div>
+
+<!-- ===== SECTION WELCOME (reste simple) ===== -->
+<section class="welcome-editorial">
+    <div class="welcome-editorial-content">
+        <span class="welcome-editorial-sub">— L'Art du souvenir —</span>
+        <h2 class="welcome-editorial-title">
+            Capturer l'émotion,<br>
+            <span class="welcome-editorial-decor">raconter votre histoire</span>
+        </h2>
+        <p class="welcome-editorial-text">
+            Dynastie Film allie l'élégance intemporelle du photoreportage<br>
+            à la puissance narrative du cinéma.
+        </p>
+    </div>
+</section>
 
 
 
@@ -65,6 +109,7 @@
 </div>
 </section>
 
+
 <section class="profession-section">
     <div class="profession-container">
         
@@ -88,6 +133,7 @@
 
     </div>
 </section>
+<div class="hero-editorial-accent2"></div>
 
 <section class="editorial-section">
     <div class="editorial-container">
@@ -111,6 +157,7 @@
 
     </div>
 </section>
+<div class="hero-editorial-accent2"></div>
 
 <section class="horizontal-scroll-section">
     <div class="horizontal-sticky-wrapper">
@@ -184,6 +231,7 @@
         </div>
     </div>
 </section>
+<div class="hero-editorial-accent2"></div>
 
 <section class="feedback-section">
     <div class="feedback-container">
@@ -212,7 +260,7 @@
 
         <div class="review-form-box">
             {% if user.is_authenticated %}
-                <p class="user-welcome" style="color: #000000;">En tant que : <strong>{{ user.username }}</strong></p>
+                <p class="user-welcome" style="color: #cdcdcd;">En tant que : <strong>{{ user.username }}</strong></p>
                 
                 <form method="POST" action="" id="reviewForm">
                     {% csrf_token %}

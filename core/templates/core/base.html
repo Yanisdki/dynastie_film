@@ -25,20 +25,22 @@
     
     <style>
         /* Configuration structurelle du canvas global */
-        #ambient-bg {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2; /* Placé tout au fond, sous l'éventuel canvas sombre */
-            pointer-events: none;
-        }
+    #ambient-dark-only {
+        position: fixed !important;
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100vh;
+        z-index: -1; 
+        pointer-events: none;
+        /* SUPPRIME opacity: 0 */
+        background: #0a0a0a; /* Fond de secours */
+    }
     </style>
 </head>
 <body>
 
-    <canvas id="ambient-bg"></canvas>
+    <canvas id="ambient-dark-only"></canvas>
 
     {% block extra_canvas %}{% endblock %}
 
@@ -99,7 +101,8 @@
     <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.3.2/dist/pixi.min.js"></script>
 
-    <script src="{% static 'js/bg-animation.js' %}"></script> <script src="{% static 'js/nav.js' %}"></script>
+
+    <script src="{% static 'js/ambient-dark-only.js' %}"></script> <script src="{% static 'js/nav.js' %}"></script>
     <script src="{% static 'js/portfolio.js' %}"></script>
 
     {% block extra_js %}{% endblock %}

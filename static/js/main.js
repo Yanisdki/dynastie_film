@@ -33,13 +33,11 @@ tl.to(TitlesWrapper, {
 
 // 2. On rapproche simplement "Film" de "Dynastie" pour compenser l'espace vide du CSS d'origine
 tl.to(Film, {
-    // Si l'écran est un mobile/tablette (<= 1024px), x vaut 0 pour rester centré.
-    // Sur ordinateur (> 1024px), on applique ton décalage d'origine de -1220px.
-    x: () => window.innerWidth <= 1024 ? 0 : -1220, 
+    // Si mobile, x=0, sinon on déplace d'une fraction de la largeur (ex: -60%)
+    x: () => window.innerWidth <= 1024 ? 0 : -window.innerWidth * 0.6,
     
-    // Si mobile, on remonte juste un poil (-10px) pour coller à Dynastie.
-    // Sur ordinateur, on applique ton décalage d'origine de -100px.
-    y: () => window.innerWidth <= 1024 ? -10 : -100,
+    // Même chose pour Y, on utilise une fraction de la hauteur
+    y: () => window.innerWidth <= 1024 ? -10 : -window.innerHeight * 0.05,
     
     transformOrigin: "left top"
 }, 0);
@@ -81,4 +79,24 @@ welcomeTl.to(WelcomeContent, {
          
     duration: 6,
     ease: "power2.in"
+});
+
+// ============================================================
+// PARALLAXE HERO ÉDITORIAL
+// ============================================================
+
+document.addEventListener('scroll', () => {
+    const hero = document.querySelector('.hero-editorial');
+    const image = document.querySelector('.hero-editorial-image');
+    
+    if (!hero || !image) return;
+    
+    const rect = hero.getBoundingClientRect();
+    const scrolled = window.scrollY;
+    const heroHeight = hero.offsetHeight;
+    
+    if (rect.top <= 0 && rect.bottom > 0) {
+        const progress = Math.min(Math.abs(rect.top) / heroHeight, 1);
+        image.style.transform = `scale(1.05) translateY(${progress * 30}px)`;
+    }
 });
