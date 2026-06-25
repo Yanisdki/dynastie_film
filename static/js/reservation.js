@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const listeDates = datesSupp.length > 0 ? datesSupp.join(", ") : "Aucune";
 
         recapContainer.innerHTML = `
-            <div style="text-align: left; color: black;">
+            <div style="text-align: left; color: #cdcdcd;">
                 <p><strong>Prestation :</strong> ${type}</p>
                 <p><strong>Date principale :</strong> ${datePrincipale}</p>
                 <p><strong>Lieu :</strong> ${lieu}</p>

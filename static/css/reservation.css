@@ -18,7 +18,7 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 30px 60px rgba(133, 133, 133, 0.4);
     margin-top: -40px;
     height: auto; 
     min-height: min-content;
@@ -253,7 +253,7 @@
 
 .input-group label {
     font-size: 0.85rem;
-    color: #2c2c2c; /* 🌟 Texte moyen pour les labels */
+    color: #cdcdcd; /* 🌟 Texte moyen pour les labels */
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -267,12 +267,12 @@
 }
 
 .form-input {
-    width: 100%;
+    width: 80%;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 20px;
     border-radius: 8px;
-    color: #2c2c2c; /* 🌟 Saisie de texte en moyen */
+    color: #cdcdcd; /* 🌟 Saisie de texte en moyen */
     font-size: 1rem;
     outline: none;
     transition: all 0.3s ease;
@@ -338,7 +338,7 @@
 }
 
 .btn-prev:hover {
-    color: #2c2c2c; /* Devient texte moyen au survol */
+    color: #d7d7d7; /* Devient texte moyen au survol */
     border-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -350,23 +350,26 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     padding: 25px;
+    color: #cdcdcd;
 }
 
 .summary-item {
     margin-bottom: 18px;
     padding-bottom: 18px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #cdcdcd;
 }
 
 .summary-item:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;
+    color: #cdcdcd;
 }
 
 .summary-label {
     font-size: 0.8rem;
-    color: #a0a0a0; /* 🌟 Petit texte pour l'intitulé */
+    color: #cdcdcd; /* 🌟 Petit texte pour l'intitulé */
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -374,7 +377,7 @@
 .summary-value {
     font-size: 1.1rem;
     margin-top: 6px;
-    color: #2c2c2c; /* 🌟 Texte moyen pour les réponses finales */
+    color: #cdcdcd; /* 🌟 Texte moyen pour les réponses finales */
     font-weight: 300;
 }
 
