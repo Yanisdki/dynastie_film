@@ -1,29 +1,96 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const nav = document.querySelector(".main-nav");
-    let lastScrollY = window.scrollY;
+/**
+ * Navigation mobile - Menu Burger
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+    const body = document.body;
 
-    window.addEventListener("scroll", () => {
-        const currentScrollY = window.scrollY;
+    // Vérifier si les éléments existent
+    if (!navToggle || !navLinks || !navOverlay) return;
 
-        // Si on scroll vers le bas et qu'on a dépassé les 100px
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            // On cache la nav en la déplaçant vers le haut
-            gsap.to(nav, { 
-                y: -100, 
-                opacity: 0, 
-                duration: 0.4, 
-                ease: "power2.out" 
-            });
-        } else {
-            // On réaffiche la nav quand on remonte
-            gsap.to(nav, { 
-                y: 0, 
-                opacity: 1, 
-                duration: 0.4, 
-                ease: "power2.out" 
-            });
-        }
-        
-        lastScrollY = currentScrollY;
+    let isMenuOpen = false;
+
+    /**
+     * Ouvre le menu
+     */
+    function openMenu() {
+        isMenuOpen = true;
+        navToggle.classList.add('active');
+        navLinks.classList.add('active');
+        navOverlay.classList.add('active');
+        body.style.overflow = 'hidden'; // Empêche le scroll
+    }
+
+    /**
+     * Ferme le menu
+     */
+    function closeMenu() {
+        isMenuOpen = false;
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+        navOverlay.classList.remove('active');
+        body.style.overflow = '';
+    }
+
+    /**
+     * Toggle du menu
+     */
+    function toggleMenu() {
+        isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    // ==========================================
+    // ÉVÉNEMENTS
+    // ==========================================
+
+    // 1. Clic sur le burger
+    navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleMenu();
     });
+
+    // 2. Clic sur l'overlay (fond sombre)
+    navOverlay.addEventListener('click', closeMenu);
+
+    // 3. Clic sur un lien du menu
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+            // Fermer le menu si on est en mobile
+            if (window.innerWidth <= 768) {
+                closeMenu();
+            }
+        });
+    });
+
+    // 4. Touche Escape pour fermer
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isMenuOpen) {
+            closeMenu();
+        }
+    });
+
+    // 5. Redimensionnement - fermer automatiquement si on passe en desktop
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                closeMenu();
+            }
+        }, 250);
+    });
+
+    // 6. Détecter les clics en dehors du menu (pour fermeture)
+    document.addEventListener('click', function(e) {
+        // Si le menu est ouvert et qu'on clique en dehors
+        if (isMenuOpen && 
+            !navLinks.contains(e.target) && 
+            !navToggle.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    console.log('✅ Navigation mobile initialisée');
 });

@@ -44,19 +44,28 @@
 
     {% block extra_canvas %}{% endblock %}
 
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <a href="{% url 'core:home' %}">DYNASTIE FILM</a>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="{% url 'core:home' %}" class="nav-item">Accueil</a></li>
-                <li><a href="{% url 'core:portfolio' %}" class="nav-item">Portfolio</a></li>
-                <li><a href="{% url 'core:reservation' %}" class="nav-item">Réservation</a></li>
-                <li><a href="{% url 'core:education' %}" class="nav-item">Éducation</a></li>
-                <li><a href="{% url 'core:idees' %}" class="nav-item">Idées</a></li>
-                <!-- Ajout d'un bouton Connexion/Compte stylisé en option -->
-                <li>
+    {% load static %}
+<nav class="main-nav">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="{% url 'core:home' %}">DYNASTIE FILM</a>
+        </div>
+        
+        <!-- BOUTON BURGER (mobile) -->
+        <button class="nav-toggle" id="navToggle" aria-label="Menu">
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+        </button>
+        
+        <!-- MENU DESKTOP & MOBILE -->
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{% url 'core:home' %}" class="nav-item">Accueil</a></li>
+            <li><a href="{% url 'core:portfolio' %}" class="nav-item">Portfolio</a></li>
+            <li><a href="{% url 'core:reservation' %}" class="nav-item">Réservation</a></li>
+            <li><a href="{% url 'core:education' %}" class="nav-item">Éducation</a></li>
+            <li><a href="{% url 'core:idees' %}" class="nav-item">Idées</a></li>
+            <li>
                 <a href="{% url 'core:login' %}" class="nav-btn">
                     <span class="btn-text">Compte</span>
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -65,9 +74,12 @@
                     </svg>
                 </a>
             </li>
-            </ul>
-        </div>
-    </nav>
+        </ul>
+    </div>
+</nav>
+
+<!-- OVERLAY pour fermer le menu en cliquant à côté -->
+<div class="nav-overlay" id="navOverlay"></div>
 
     <main>
         {% block content %}
